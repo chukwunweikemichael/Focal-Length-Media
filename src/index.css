@@ -1,0 +1,609 @@
+/* ==========================================================================
+   1. CORE DESIGN SYSTEM & ELITE LEVEL ROOT SETUP
+   ========================================================================== */
+@import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Montserrat:wght@300;400;500;600;700;900&display=swap');
+
+* { 
+  box-sizing: border-box; 
+  margin: 0; 
+  padding: 0; 
+}
+
+html {
+  scroll-behavior: smooth;
+  background: #030406;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* Elite Scroll Engine - Solid Metallic Gold Rail */
+::-webkit-scrollbar { 
+  width: 5px; 
+}
+::-webkit-scrollbar-track { 
+  background: #030406; 
+}
+::-webkit-scrollbar-thumb { 
+  background: linear-gradient(180deg, #d4af37 0%, #8a6f27 100%); 
+  border-radius: 20px; 
+}
+
+.main-viewport-wrapper {
+  font-family: 'Montserrat', sans-serif;
+  background: #030406;
+  color: #ffffff;
+  min-height: 100vh;
+  overflow-x: hidden;
+  position: relative;
+}
+
+/* ==========================================================================
+   2. ACCORDION DROP-DOWN STAGGERED PHYSICS (The Heavy Mechanical Slam)
+   ========================================================================== */
+.stage-drop-container {
+  opacity: 0;
+  transform: translateY(-400px) scaleY(0.75);
+  transform-origin: top center;
+  filter: blur(35px);
+  transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
+              transform 1.4s cubic-bezier(0.175, 0.885, 0.32, 1.28),
+              filter 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.stage-drop-container.is-slammed-down {
+  opacity: 1;
+  transform: translateY(0) scaleY(1);
+  filter: blur(0px);
+}
+
+/* Asynchronous Component Kinetic Stagger Timelines */
+.nav-drop-element {
+  transform: translateY(-120px);
+  opacity: 0;
+  transition: transform 1.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
+}
+.stage-drop-container.is-slammed-down .nav-drop-element {
+  transform: translateY(0);
+  opacity: 1;
+  transition-delay: 0.15s;
+}
+
+.hero-logo-drop {
+  transform: translateY(-250px) scale(0.5);
+  opacity: 0;
+  transition: transform 1.5s cubic-bezier(0.175, 0.885, 0.32, 1.25), opacity 1s ease;
+}
+.stage-drop-container.is-slammed-down .hero-logo-drop {
+  transform: translateY(0) scale(1);
+  opacity: 1;
+  transition-delay: 0.3s;
+}
+
+/* ==========================================================================
+   3. VOLUMETRIC HERO STAGE & NEXT-GEN VISUAL TREATMENTS
+   ========================================================================== */
+.hero-viewport-section {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: relative;
+  overflow: hidden;
+  padding: 160px 24px 120px 24px;
+  text-align: center;
+  background: radial-gradient(circle at center, #0a0d14 0%, #030406 100%);
+  perspective: 1000px; /* Enable depth for 3D logo tracking */
+}
+
+.logo-hero-container {
+  position: relative;
+  margin-bottom: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  min-height: 440px;
+  overflow: visible;
+  transform-style: preserve-3d;
+  transition: transform 0.2s cubic-bezier(0.25, 1, 0.5, 1);
+}
+
+/* High-End Deep Sub-Surface Scattering Gold Aura Fields */
+.glow-backdrop-mesh {
+  position: absolute;
+  width: min(850px, 98vw);
+  height: min(850px, 98vw);
+  background: radial-gradient(circle at center, rgba(212, 175, 55, 0.22) 0%, rgba(138, 111, 39, 0.05) 45%, rgba(255, 62, 62, 0.01) 70%, transparent 80%);
+  filter: blur(90px);
+  animation: visualStageMorphing 14s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateZ(-50px);
+}
+
+.ambient-blur-ring {
+  position: absolute;
+  width: 520px;
+  height: 520px;
+  border-radius: 50%;
+  background: conic-gradient(from 180deg, transparent, rgba(212, 175, 55, 0.15), transparent, rgba(255, 62, 62, 0.05), transparent);
+  filter: blur(50px);
+  animation: dynamicSpindleRotation 32s linear infinite;
+  pointer-events: none;
+  z-index: 1;
+  transform: translateZ(-20px);
+}
+
+/* Interactive Digital HUD Target Box surrounding Hero Image */
+.hud-target-bracket {
+  position: absolute;
+  width: min(480px, 86vw);
+  height: min(480px, 86vw);
+  border: 1px dashed rgba(212, 175, 55, 0.15);
+  border-radius: 24px;
+  pointer-events: none;
+  z-index: 1;
+  animation: dynamicSpindleRotation 60s linear infinite reverse;
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.logo-hero-container:hover .hud-target-bracket {
+  border-color: rgba(212, 175, 55, 0.4);
+  width: min(510px, 92vw);
+  height: min(510px, 92vw);
+  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.15));
+}
+
+/* Precision Inertial Float Engine */
+.premium-hero-logo {
+  width: min(440px, 80vw);
+  position: relative;
+  z-index: 2;
+  filter: drop-shadow(0 35px 70px rgba(0, 0, 0, 0.99)) drop-shadow(0 0 80px rgba(212, 175, 55, 0.2));
+  transform-style: preserve-3d;
+  transform: translateZ(40px);
+  transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.premium-hero-logo.is-active-floating {
+  animation: premiumInertialFloat 6s ease-in-out infinite;
+}
+
+/* Amplify drop-shadow intensity when interacting with the mouse */
+.logo-hero-container:hover .premium-hero-logo {
+  filter: drop-shadow(0 45px 85px rgba(0, 0, 0, 1)) drop-shadow(0 0 100px rgba(212, 175, 55, 0.35));
+}
+
+/* Interactive Status Control Badge */
+.cyber-status-tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(212, 175, 55, 0.03);
+  border: 1px solid rgba(212, 175, 55, 0.18);
+  padding: 7px 16px;
+  border-radius: 30px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.62rem;
+  font-weight: 800;
+  letter-spacing: 3px;
+  color: #d4af37;
+  text-transform: uppercase;
+  margin-bottom: 30px;
+  box-shadow: 0 0 25px rgba(212, 175, 55, 0.05);
+}
+
+.pulse-dot {
+  width: 6px;
+  height: 6px;
+  background: #ff3e3e;
+  border-radius: 50%;
+  box-shadow: 0 0 12px #ff3e3e;
+  animation: corePulse 2s infinite;
+}
+
+/* ==========================================================================
+   4. SEAMLESS INTERACTION MATRICES
+   ========================================================================== */
+.service-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.012) 0%, rgba(255, 255, 255, 0.001) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.015);
+  backdrop-filter: blur(40px);
+  -webkit-backdrop-filter: blur(40px);
+  border-radius: 20px;
+  padding: 60px 45px;
+  position: relative;
+  overflow: hidden;
+  transition: transform 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              border-color 0.7s cubic-bezier(0.16, 1, 0.3, 1),
+              box-shadow 0.7s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.service-card::before {
+  content: '';
+  position: absolute;
+  top: 0; left: -100%;
+  width: 100%; height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.04), transparent);
+  transition: all 0.7s ease;
+}
+
+.service-card:hover::before {
+  left: 100%;
+}
+
+.service-card:hover {
+  transform: translateY(-14px) scale(1.02);
+  border-color: rgba(212, 175, 55, 0.35);
+  box-shadow: 0 50px 90px rgba(0, 0, 0, 0.95),
+              0 0 50px rgba(212, 175, 55, 0.12);
+}
+
+/* Heavy Polished Custom Geometric Control Cluster Buttons */
+.btn-red {
+  background: linear-gradient(135deg, #d4af37 0%, #997a1f 100%);
+  color: #030406;
+  border: none;
+  padding: 20px 52px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  font-weight: 900;
+  letter-spacing: 3.5px;
+  cursor: pointer;
+  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+  position: relative;
+  overflow: hidden;
+  box-shadow: 0 12px 35px rgba(212, 175, 55, 0.15);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), background-color 0.4s ease, box-shadow 0.4s ease;
+}
+
+.btn-red:hover {
+  background: linear-gradient(135deg, #ebd076 0%, #d4af37 100%);
+  transform: translateY(-5px) scale(1.03);
+  box-shadow: 0 18px 45px rgba(212, 175, 55, 0.35);
+}
+
+.btn-outline {
+  background: transparent;
+  color: #ffffff;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 19px 52px;
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 1.25rem;
+  letter-spacing: 3.5px;
+  cursor: pointer;
+  clip-path: polygon(14px 0%, 100% 0%, calc(100% - 14px) 100%, 0% 100%);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, color 0.4s ease;
+}
+
+.btn-outline:hover {
+  border-color: #d4af37;
+  color: #d4af37;
+  transform: translateY(-5px) scale(1.03);
+}
+
+/* Premium Precision Inputs */
+.contact-input-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.contact-input {
+  width: 100%;
+  background: rgba(215, 212, 212, 0.005);
+  border: 1px solid rgba(255, 255, 255, 0.015);
+  border-bottom: 2px solid rgba(48, 4, 4, 0.253);
+  color: #ffffff;
+  padding: 22px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  outline: none;
+  border-radius: 8px;
+  transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.contact-input:focus {
+  background: rgba(212, 175, 55, 0.01);
+  border-color: rgba(212, 175, 55, 0.12);
+  border-bottom-color: #d4af37;
+  box-shadow: 0 15px 40px rgba(0, 0, 0, 0.6);
+}
+
+.contact-input::placeholder { 
+  color: rgba(255, 255, 255, 0.2); 
+}
+
+/* 🚨 NATIVE DROPDOWN VISIBILITY ENGINE ENGINE (FIXES IMAGE_A545E4.PNG) 🚨 */
+select.contact-input {
+  cursor: pointer;
+  appearance: none;
+  background-color: #030406 !important; /* Forces input background to match slate black */
+  color: #ffffff !important;           /* Forces active selection text to be white */
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
+  background-repeat: no-repeat;
+  background-position: calc(100% - 24px) center;
+}
+
+/* This targets the internal popup menu list options directly across browsers */
+select.contact-input option {
+  background-color: #090d16 !important; /* Forces options sheet black (kills whiteout box) */
+  color: #ffffff !important;           /* Forces options text white */
+  padding: 20px !important;
+  font-family: 'Montserrat', sans-serif;
+}
+
+.nav-link {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.78rem;
+  font-weight: 700;
+  letter-spacing: 4px;
+  color: rgba(255, 255, 255, 0.35);
+  text-decoration: none;
+  text-transform: uppercase;
+  transition: color 0.3s ease, transform 0.3s ease;
+  cursor: pointer;
+  display: inline-block;
+  position: relative;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -4px; left: 0;
+  width: 0; height: 2px;
+  background: #d4af37;
+  transition: width 0.3s ease;
+}
+
+.nav-link:hover::after {
+  width: 100%;
+}
+
+.nav-link:hover { 
+  color: #d4af37;
+  transform: translateY(-2px);
+}
+
+.section-label {
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.72rem;
+  font-weight: 900;
+  letter-spacing: 10px;
+  color: #d4af37;
+  text-transform: uppercase;
+}
+
+.red-line {
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.1), #d4af37, rgba(212, 175, 55, 0.1), transparent);
+  width: 100%;
+}
+
+/* ==========================================================================
+   5. PROCEDURAL CINEMA OVERLAYS & STRUCTURAL TIMELINES
+   ========================================================================== */
+.grain {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 999;
+  opacity: 0.018;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+}
+
+.scanline {
+  position: absolute;
+  left: 0; right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 55, 0.03), transparent);
+  animation: productionScanline 15s linear infinite;
+  pointer-events: none;
+  z-index: 3;
+}
+
+/* INTERNAL CONTENT SEQUENCING MAPS */
+.name-enter, .tagline-enter, .cta-enter {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.1s cubic-bezier(0.16, 1, 0.3, 1), transform 1.1s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.name-enter.active { opacity: 1; transform: translateY(0); transition-delay: 0.45s; }
+.tagline-enter.active { opacity: 1; transform: translateY(0); transition-delay: 0.58s; }
+.cta-enter.active { opacity: 1; transform: translateY(0); transition-delay: 0.7s; }
+
+@keyframes visualStageMorphing {
+  0% { border-radius: 45% 55% 65% 35% / 40% 45% 55% 60%; transform: translate(0, 0) scale(0.95); }
+  50% { border-radius: 60% 40% 55% 45% / 55% 50% 45% 45%; transform: translate(25px, -15px) scale(1.04); }
+  100% { border-radius: 40% 60% 40% 60% / 45% 55% 40% 55%; transform: translate(-15px, 20px) scale(0.95); }
+}
+
+@keyframes dynamicSpindleRotation {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+@keyframes premiumInertialFloat {
+  0%, 100% { transform: translateY(0px) scale(1); }
+  50% { transform: translateY(-12px) scale(1.01); }
+}
+
+@keyframes productionScanline {
+  0% { transform: translateY(-100%); }
+  100% { transform: translateY(100vh); }
+}
+
+@keyframes corePulse {
+  0%, 100% { transform: scale(1); opacity: 1; box-shadow: 0 0 10px #ff3e3e; }
+  50% { transform: scale(1.3); opacity: 0.5; box-shadow: 0 0 18px #ff3e3e; }
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
+/* ==========================================================================
+   6. HIGH-END CINEMATIC ENGINE LOADING TERMINAL
+   ========================================================================== */
+.studio-preloader {
+  position: fixed;
+  inset: 0;
+  background: #030406;
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  transition: opacity 0.8s cubic-bezier(0.16, 1, 0.3, 1), visibility 0.8s;
+}
+
+.studio-preloader.is-hidden {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+}
+
+.load-bar-container {
+  width: 200px;
+  height: 2px;
+  background: rgba(255, 255, 255, 0.05);
+  margin-top: 24px;
+  position: relative;
+  overflow: hidden;
+  border-radius: 4px;
+}
+
+.load-bar-fluid {
+  position: absolute;
+  top: 0; left: 0; bottom: 0;
+  width: 0%;
+  background: #d4af37;
+  box-shadow: 0 0 10px #d4af37;
+  transition: width 0.4s ease-out;
+}
+
+/* ==========================================================================
+   7. CUSTOM ULTRA-LUXURY DROPDOWN INTERFACE ENGINE
+   ========================================================================== */
+.custom-select-container {
+  position: relative;
+  width: 100%;
+  z-index: 10;
+}
+
+/* Multi-Million Dollar Glassmorphic Input Trigger Block */
+.custom-select-trigger {
+  width: 100%;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.008) 0%, rgba(255, 255, 255, 0.002) 100%);
+  border: 1px solid rgba(255, 255, 255, 0.02);
+  border-bottom: 2px solid rgba(214, 175, 55, 0.25);
+  color: #ffffff;
+  padding: 22px 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 1px;
+  border-radius: 8px;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  user-select: none;
+  box-shadow: inset 0 1px 0px rgba(255, 255, 255, 0.02);
+  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-select-container.is-open .custom-select-trigger {
+  background: rgba(212, 175, 55, 0.02);
+  border-color: rgba(212, 175, 55, 0.25);
+  border-bottom-color: #d4af37;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.85),
+              inset 0 1px 0px rgba(212, 175, 55, 0.1);
+}
+
+.custom-select-chevron {
+  font-size: 0.75rem;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+  color: rgba(212, 175, 55, 0.45);
+  text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
+}
+
+.custom-select-container.is-open .custom-select-chevron {
+  transform: rotate(180deg);
+  color: #d4af37;
+}
+
+/* Custom Dropdown Option Container (Deep Midnight Obsidian Plate - Fixed for visibility) */
+.custom-dropdown-panel {
+  position: absolute;
+  top: calc(100% + 10px);
+  left: 0;
+  right: 0;
+  background: #090d16 !important; 
+  border: 1px solid rgba(212, 175, 55, 0.3);
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 45px 95px rgba(0, 0, 0, 0.98), 
+              0 0 40px rgba(212, 175, 55, 0.1);
+  opacity: 0;
+  transform: translateY(-15px) scaleX(0.99);
+  pointer-events: none;
+  transform-origin: top center;
+  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), 
+              opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  z-index: 999;
+  backdrop-filter: blur(50px);
+  -webkit-backdrop-filter: blur(50px);
+}
+
+.custom-select-container.is-open .custom-dropdown-panel {
+  opacity: 1;
+  transform: translateY(0) scaleX(1);
+  pointer-events: auto;
+}
+
+/* Individual Choice Matrix Rows with Kinetic Depth Tracking */
+.custom-select-option {
+  padding: 18px 26px;
+  font-family: 'Montserrat', sans-serif;
+  font-size: 0.92rem;
+  font-weight: 500;
+  color: #ffffff !important; 
+  background: #090d16 !important; 
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.03);
+  transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.custom-select-option:last-child {
+  border-bottom: none;
+}
+
+.custom-select-option:hover {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(9, 13, 22, 1) 100%) !important;
+  color: #ffffff !important;
+  padding-left: 34px;
+}
+
+.custom-select-option.is-selected {
+  background: linear-gradient(90deg, rgba(212, 175, 55, 0.2) 0%, rgba(9, 13, 22, 1) 100%) !important;
+  color: #d4af37 !important; 
+  font-weight: 700;
+  border-left: 3px solid #d4af37;
+  padding-left: 31px;
+}
+
+/* Kinetic Asset Icon Prefixes */
+.option-icon-prefix {
+  font-size: 1.15rem;
+  transition: transform 0.4s ease;
+  display: inline-block;
+}
+
+.custom-select-option:hover .option-icon-prefix {
+  transform: scale(1.2) rotate(6deg);
+}
