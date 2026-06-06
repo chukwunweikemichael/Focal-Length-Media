@@ -14,6 +14,9 @@ html {
   background: #030406;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  /* Eliminates double-tap zoom delay on mobile webkit layers */
+  touch-action: manipulation; 
 }
 
 /* Elite Scroll Engine - Solid Metallic Gold Rail */
@@ -33,6 +36,7 @@ html {
   background: #030406;
   color: #ffffff;
   min-height: 100vh;
+  min-height: 100dvh; /* Modern fluid dynamic viewport height fallback */
   overflow-x: hidden;
   position: relative;
 }
@@ -42,19 +46,22 @@ html {
    ========================================================================== */
 .stage-drop-container {
   opacity: 0;
-  transform: translateY(-200px) scaleY(0.85); /* Reduced translate for safer mobile performance */
+  /* Scaled down translation from -400px to avoid extreme screen clipping out of viewports on smaller mobile sizes */
+  transform: translateY(clamp(-200px, -35vh, -400px)) scaleY(0.85);
   transform-origin: top center;
   filter: blur(25px);
+  will-change: transform, opacity, filter; /* Forces GPU allocation prior to trigger execution */
   transition: opacity 1s cubic-bezier(0.16, 1, 0.3, 1),
               transform 1.2s cubic-bezier(0.175, 0.885, 0.32, 1.2),
               filter 1s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
+/* Absolute accessibility fallback ensuring rendering safety on lower-tier hardware */
 @media (prefers-reduced-motion: reduce) {
-  .stage-drop-container {
-    transform: none;
-    filter: none;
-    transition: opacity 0.5s ease;
+  .stage-drop-container, .nav-drop-element, .hero-logo-drop {
+    transform: none !important;
+    filter: none !important;
+    transition: opacity 0.5s ease-important;
   }
 }
 
@@ -66,8 +73,9 @@ html {
 
 /* Asynchronous Component Kinetic Stagger Timelines */
 .nav-drop-element {
-  transform: translateY(-50px);
+  transform: translateY(-60px);
   opacity: 0;
+  will-change: transform, opacity;
   transition: transform 1.2s cubic-bezier(0.16, 1, 0.3, 1), opacity 1s ease;
 }
 .stage-drop-container.is-slammed-down .nav-drop-element {
@@ -77,9 +85,10 @@ html {
 }
 
 .hero-logo-drop {
-  transform: translateY(-100px) scale(0.8);
+  transform: translateY(-120px) scale(0.75);
   opacity: 0;
-  transition: transform 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.15), opacity 1s ease;
+  will-change: transform, opacity;
+  transition: transform 1.3s cubic-bezier(0.175, 0.885, 0.32, 1.18), opacity 1s ease;
 }
 .stage-drop-container.is-slammed-down .hero-logo-drop {
   transform: translateY(0) scale(1);
@@ -92,17 +101,17 @@ html {
    ========================================================================== */
 .hero-viewport-section {
   min-height: 100vh;
-  min-height: -webkit-fill-available; /* Fixed mobile layout jumping bugs */
+  min-height: 100dvh; /* Prevents viewport snapping and content-shifting from native browser address bars */
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: relative;
   overflow: hidden;
-  padding: clamp(100px, 15vh, 180px) 1.5rem clamp(60px, 10vh, 120px) 1.5rem;
+  padding: clamp(100px, 15vh, 160px) 1.5rem clamp(60px, 10vh, 120px) 1.5rem;
   text-align: center;
   background: radial-gradient(circle at center, #0a0d14 0%, #030406 100%);
-  perspective: 1000px;
+  perspective: 1000px; 
 }
 
 .logo-hero-container {
@@ -112,8 +121,8 @@ html {
   justify-content: center;
   align-items: center;
   width: 100%;
-  max-width: 500px;
-  aspect-ratio: 1 / 1; /* Eliminates fixed height breakages */
+  max-width: 480px;
+  aspect-ratio: 1 / 1; /* Eliminates the breaking fixed 440px height rule using absolute proportion limits */
   overflow: visible;
   transform-style: preserve-3d;
   transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
@@ -125,11 +134,12 @@ html {
   width: min(160%, 95vw);
   height: min(160%, 95vw);
   background: radial-gradient(circle at center, rgba(212, 175, 55, 0.22) 0%, rgba(138, 111, 39, 0.05) 45%, rgba(255, 62, 62, 0.01) 70%, transparent 80%);
-  filter: blur(clamp(40px, 8vw, 90px));
+  filter: blur(clamp(40px, 8vw, 90px)); /* Softens scale scaling artifact curves natively */
   animation: visualStageMorphing 14s ease-in-out infinite alternate;
   pointer-events: none;
   z-index: 1;
   transform: translateZ(-50px);
+  will-change: transform, border-radius;
 }
 
 .ambient-blur-ring {
@@ -143,6 +153,7 @@ html {
   pointer-events: none;
   z-index: 1;
   transform: translateZ(-20px);
+  will-change: transform;
 }
 
 /* Interactive Digital HUD Target Box surrounding Hero Image */
@@ -155,13 +166,17 @@ html {
   pointer-events: none;
   z-index: 1;
   animation: dynamicSpindleRotation 60s linear infinite reverse;
-  transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
+  transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
+  will-change: transform;
 }
 
-.logo-hero-container:hover .hud-target-bracket {
-  border-color: rgba(212, 175, 55, 0.4);
-  transform: scale(1.05);
-  filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.15));
+/* Refactored transitions to modify transforms instead of container width/height properties to block layout thrashing */
+@media (hover: hover) {
+  .logo-hero-container:hover .hud-target-bracket {
+    border-color: rgba(212, 175, 55, 0.4);
+    transform: scale(1.05);
+    filter: drop-shadow(0 0 15px rgba(212, 175, 55, 0.15));
+  }
 }
 
 /* Precision Inertial Float Engine */
@@ -174,14 +189,17 @@ html {
   transform-style: preserve-3d;
   transform: translateZ(40px);
   transition: filter 0.5s cubic-bezier(0.16, 1, 0.3, 1);
+  will-change: transform;
 }
 
 .premium-hero-logo.is-active-floating {
   animation: premiumInertialFloat 6s ease-in-out infinite;
 }
 
-.logo-hero-container:hover .premium-hero-logo {
-  filter: drop-shadow(0 35px 60px rgba(0, 0, 0, 1)) drop-shadow(0 0 70px rgba(212, 175, 55, 0.3));
+@media (hover: hover) {
+  .logo-hero-container:hover .premium-hero-logo {
+    filter: drop-shadow(0 35px 60px rgba(0, 0, 0, 1)) drop-shadow(0 0 70px rgba(212, 175, 55, 0.3));
+  }
 }
 
 /* Interactive Status Control Badge */
@@ -221,7 +239,7 @@ html {
   backdrop-filter: blur(40px);
   -webkit-backdrop-filter: blur(40px);
   border-radius: 20px;
-  padding: clamp(30px, 6vw, 60px) clamp(20px, 5vw, 45px);
+  padding: clamp(30px, 6vw, 60px) clamp(20px, 5vw, 45px); /* Responsive inner structural spacing boundaries */
   position: relative;
   overflow: hidden;
   transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1),
@@ -242,6 +260,7 @@ html {
   left: 100%;
 }
 
+/* Guard translation scaling layers behind desktop pointers to protect native mobile cross-axis swipe behaviors */
 @media (hover: hover) {
   .service-card:hover {
     transform: translateY(-8px) scale(1.01);
@@ -251,13 +270,13 @@ html {
   }
 }
 
-/* Heavy Polished Buttons - Completely Fluid and Scaled for Mobile Taps */
+/* Heavy Polished Custom Geometric Control Cluster Buttons - Fluid and Scaled for Mobile Taps */
 .btn-red {
   background: linear-gradient(135deg, #d4af37 0%, #997a1f 100%);
   color: #030406;
   border: none;
   width: auto;
-  min-width: clamp(160px, 45vw, 220px);
+  min-width: clamp(160px, 45vw, 220px); /* Restricts over-expansion while maintaining sizing integrity */
   padding: clamp(16px, 3.5vw, 20px) clamp(24px, 5vw, 52px);
   font-family: 'Bebas Neue', sans-serif;
   font-size: clamp(1.1rem, 2.5vw, 1.25rem);
@@ -299,6 +318,11 @@ html {
   }
 }
 
+/* Mobile Touch-Target Active Compression States (Replaces hover reactions for active taps) */
+.btn-red:active, .btn-outline:active {
+  transform: translateY(1px) scale(0.98);
+}
+
 /* Premium Precision Inputs */
 .contact-input-wrapper {
   position: relative;
@@ -313,7 +337,7 @@ html {
   color: #ffffff;
   padding: clamp(16px, 4vw, 22px);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
+  font-size: 16px; /* Explicitly locked to 16px min on mobile devices to forcefully suppress automatic iOS Safari auto-zooming scripts */
   outline: none;
   border-radius: 8px;
   transition: all 0.5s cubic-bezier(0.16, 1, 0.3, 1);
@@ -334,7 +358,7 @@ html {
 select.contact-input {
   cursor: pointer;
   appearance: none;
-  -webkit-appearance: none; /* Correctly forces style overwrite on iOS Safari mobile layouts */
+  -webkit-appearance: none; /* Correctly forces custom layout override engines on physical iOS devices */
   background-color: #030406 !important; 
   color: #ffffff !important;           
   background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
@@ -348,7 +372,7 @@ select.contact-input option {
   color: #ffffff !important;           
   padding: 16px !important;
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
+  font-size: 16px;
 }
 
 .nav-link {
@@ -363,24 +387,26 @@ select.contact-input option {
   cursor: pointer;
   display: inline-block;
   position: relative;
+  padding: 8px 0; /* Expanded touch zone bounding fields */
 }
 
 .nav-link::after {
   content: '';
   position: absolute;
-  bottom: -4px; left: 0;
+  bottom: 2px; left: 0;
   width: 0; height: 2px;
   background: #d4af37;
   transition: width 0.3s ease;
 }
 
-.nav-link:hover::after {
-  width: 100%;
-}
-
-.nav-link:hover { 
-  color: #d4af37;
-  transform: translateY(-2px);
+@media (hover: hover) {
+  .nav-link:hover::after {
+    width: 100%;
+  }
+  .nav-link:hover { 
+    color: #d4af37;
+    transform: translateY(-2px);
+  }
 }
 
 .section-label {
@@ -457,6 +483,11 @@ select.contact-input option {
   50% { transform: scale(1.2); opacity: 0.5; box-shadow: 0 0 15px #ff3e3e; }
 }
 
+@keyframes float {
+  0%, 100% { transform: translateY(0px); }
+  50% { transform: translateY(-6px); }
+}
+
 /* ==========================================================================
    6. HIGH-END CINEMATIC ENGINE LOADING TERMINAL
    ========================================================================== */
@@ -506,15 +537,16 @@ select.contact-input option {
   z-index: 10;
 }
 
+/* Multi-Million Dollar Glassmorphic Input Trigger Block */
 .custom-select-trigger {
   width: 100%;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.008) 0%, rgba(255, 255, 255, 0.002) 100%);
   border: 1px solid rgba(255, 255, 255, 0.02);
-  border-bottom: 2px solid rgba(214, 175, 55, 0.25);
+  border-bottom: 2px solid rgba(212, 175, 55, 0.25);
   color: #ffffff;
   padding: clamp(16px, 4vw, 22px) clamp(20px, 5vw, 26px);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.95rem;
+  font-size: 16px; /* Suppresses device auto-zooms safely */
   letter-spacing: 1px;
   border-radius: 8px;
   cursor: pointer;
@@ -546,6 +578,7 @@ select.contact-input option {
   color: #d4af37;
 }
 
+/* Custom Dropdown Option Container (Deep Midnight Obsidian Plate - Fixed for visibility) */
 .custom-dropdown-panel {
   position: absolute;
   top: calc(100% + 8px);
@@ -554,7 +587,8 @@ select.contact-input option {
   background: #090d16 !important; 
   border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 12px;
-  overflow: hidden;
+  overflow-y: auto;
+  max-height: 280px; /* Protects small device views by preventing container panel spilling off-screen */
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.95), 
               0 0 30px rgba(212, 175, 55, 0.1);
   opacity: 0;
@@ -566,6 +600,9 @@ select.contact-input option {
   z-index: 999;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
+  
+  /* Precision Touch Inertial Scrolling Rules */
+  -webkit-overflow-scrolling: touch;
 }
 
 .custom-select-container.is-open .custom-dropdown-panel {
@@ -574,10 +611,11 @@ select.contact-input option {
   pointer-events: auto;
 }
 
+/* Individual Choice Matrix Rows with Kinetic Depth Tracking */
 .custom-select-option {
   padding: clamp(14px, 3vw, 18px) clamp(20px, 5vw, 26px);
   font-family: 'Montserrat', sans-serif;
-  font-size: 0.92rem;
+  font-size: 16px; /* Optimized mobile standard layout threshold */
   font-weight: 500;
   color: #ffffff !important; 
   background: #090d16 !important; 
@@ -600,6 +638,7 @@ select.contact-input option {
   border-left: 3px solid #d4af37;
 }
 
+/* Hover-specific properties isolated into strict pointer rules to secure mobile tap layouts */
 @media (hover: hover) {
   .custom-select-option:hover {
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(9, 13, 22, 1) 100%) !important;
@@ -609,8 +648,12 @@ select.contact-input option {
   .custom-select-option.is-selected {
     padding-left: clamp(21px, 5.5vw, 31px);
   }
+  .custom-select-option:hover .option-icon-prefix {
+    transform: scale(1.2) rotate(6deg);
+  }
 }
 
+/* Kinetic Asset Icon Prefixes */
 .option-icon-prefix {
   font-size: 1.15rem;
   transition: transform 0.4s ease;

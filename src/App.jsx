@@ -19,11 +19,12 @@ export default function FocalLengthMedia() {
   const [loaded, setLoaded] = useState(false);
   const [activeCard, setActiveCard] = useState(null);
   const [scrollY, setScrollY] = useState(0);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
   // Advanced Kinetic Image tracking vectors
-  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
   const containerRef = useRef(null);
   const heroRef = useRef(null);
+  const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
   useEffect(() => {
     // Stage 1: Procedural Asset Simulation Loading Pipeline
@@ -86,8 +87,25 @@ export default function FocalLengthMedia() {
     setMouseCoords({ x: 0, y: 0 });
   };
 
+  const scrollToSection = (id) => {
+    setMobileMenuOpen(false);
+    const element = document.getElementById(id.toLowerCase());
+    if (element) {
+      // Offset scroll height calculation slightly for sticky navbar depth
+      const offset = 90; 
+      const bodyRect = document.body.getBoundingClientRect().top;
+      const elementRect = element.getBoundingClientRect().top;
+      const elementPosition = elementRect - bodyRect;
+      const offsetPosition = elementPosition - offset;
+
+      window.scrollTo({
+        top: offsetPosition,
+        behavior: "smooth"
+      });
+    }
+  };
+
   const parallax = scrollY * 0.35;
-  // Compute image scaling directly connected to modern scroll analytics
   const dynamicImageScale = Math.max(0.85, 1 - scrollY * 0.0008);
 
   return (
@@ -107,57 +125,86 @@ export default function FocalLengthMedia() {
         </div>
       </div>
 
+      {/* ULTRA-PREMIUM REFRACTIVE FIXED NAVIGATION INTERFACE */}
+      {/* Isolated completely from layout drop tracking vectors */}
+      <nav 
+        className={`nav-fixed-anchor ${loaded ? "nav-fade-in" : ""}`}
+        style={{
+          position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000,
+          padding: scrollY > 60 ? "18px 6%" : "26px 6%",
+          display: "flex", alignItems: "center", justifyContent: "space-between",
+          background: scrollY > 60 ? "rgba(3, 4, 6, 0.95)" : "linear-gradient(to bottom, rgba(3, 4, 6, 0.9), transparent)",
+          backdropFilter: "blur(30px)",
+          WebkitBackdropFilter: "blur(30px)",
+          borderBottom: scrollY > 60 ? "1px solid rgba(255,255,255,0.04)" : "1px solid rgba(255,255,255,0.015)",
+          boxShadow: scrollY > 60 ? "0 20px 50px rgba(0,0,0,0.9)" : "none",
+          transition: "padding 0.4s ease, background 0.4s ease, border 0.4s ease, box-shadow 0.4s ease",
+          opacity: loaded ? 1 : 0,
+          transform: loaded ? "translateY(0)" : "translateY(-10px)"
+        }}
+      >
+        <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
+          <img
+            src={LOGO_URL}
+            alt="FLM Logo"
+            style={{ 
+              height: "38px", 
+              width: "38px",
+              objectFit: "cover", 
+              borderRadius: "6px",
+              boxShadow: "0 8px 25px rgba(212,175,55,0.12)"
+            }}
+          />
+          <div style={{ width: "1px", height: "18px", background: "rgba(255,255,255,.1)" }} />
+          <span style={{ fontSize: ".85rem", fontWeight: 900, letterSpacing: "6px", color: "#ffffff", fontFamily: "'Montserrat', sans-serif" }}>
+            FOCAL LENGTH
+          </span>
+        </div>
+
+        {/* Desktop Menu Links */}
+        <div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
+          {["Services", "About", "Contact"].map(l => (
+            <span 
+              key={l} 
+              className="nav-link"
+              onClick={() => scrollToSection(l)}
+              style={{ cursor: "pointer", fontFamily: "'Montserrat', sans-serif", fontSize: "0.8rem", fontWeight: 600, letterSpacing: "2px", textTransform: "uppercase" }}
+            >
+              {l}
+            </span>
+          ))}
+        </div>
+
+        {/* Cinematic Kinetic Hamburger Button */}
+        <button 
+          className={`mobile-menu-trigger ${mobileMenuOpen ? "is-open" : ""}`}
+          onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+          aria-label="Toggle Navigation Menu"
+        >
+          <span className="hamburger-line"></span>
+          <span className="hamburger-line"></span>
+        </button>
+      </nav>
+
+      {/* Mobile Dynamic Full-Screen Overlay menu */}
+      <div className={`mobile-nav-overlay ${mobileMenuOpen ? "is-visible" : ""}`}>
+        <div className="mobile-links-container">
+          {["Services", "About", "Contact"].map((l, index) => (
+            <span 
+              key={l} 
+              className="mobile-nav-link"
+              style={{ animationDelay: `${index * 0.1}s` }}
+              onClick={() => scrollToSection(l)}
+            >
+              {l}
+            </span>
+          ))}
+        </div>
+      </div>
+
+      {/* VIEWPORT GRAPHIC CONTENT HUB */}
       <div className={`main-viewport-wrapper stage-drop-container ${slamActive ? "is-slammed-down" : ""}`}>
         <div className="grain" />
-
-        {/* ULTRA-PREMIUM REFRACTIVE NAVIGATION INTERFACE */}
-        <nav 
-          className="nav-drop-element"
-          style={{
-            position: "fixed", top: 0, left: 0, right: 0, zIndex: 100,
-            padding: "26px 6%",
-            display: "flex", alignItems: "center", justifyContent: "space-between",
-            background: scrollY > 60 ? "rgba(3, 4, 6, 0.96)" : "linear-gradient(to bottom, rgba(3, 4, 6, 0.85), transparent)",
-            backdropFilter: "blur(40px)",
-            WebkitBackdropFilter: "blur(40px)",
-            borderBottom: "1px solid rgba(255,255,255,0.015)",
-            boxShadow: scrollY > 60 ? "0 25px 60px rgba(0,0,0,0.95)" : "none",
-            transition: "all 0.6s cubic-bezier(0.16, 1, 0.3, 1)",
-          }}
-        >
-          <div style={{ display: "flex", alignItems: "center", gap: 10 }}>
-            <div style={{ display: "flex", alignItems: "center", gap: "18px" }}>
-              <img
-                src={LOGO_URL}
-                alt="FLM Logo"
-                style={{ 
-                  height: "40px", 
-                  objectFit: "contain", 
-                  borderRadius: "6px",
-                  boxShadow: "0 8px 25px rgba(212,175,55,0.12)"
-                }}
-              />
-              <div style={{ width: "1px", height: "18px", background: "rgba(255,255,255,.1)" }} />
-              <span style={{ fontSize: ".85rem", fontWeight: 900, letterSpacing: "6px", color: "#ffffff", fontFamily: "'Montserrat', sans-serif" }}>
-                FOCAL LENGTH
-              </span>
-            </div>
-          </div>
-          <div style={{ display: "flex", gap: 48 }}>
-            {["Services", "About", "Contact"].map(l => (
-              <span 
-                key={l} 
-                className="nav-link"
-                onClick={() => {
-                  const element = document.getElementById(l.toLowerCase());
-                  if (element) element.scrollIntoView({ behavior: "smooth" });
-                }}
-              >
-                {l}
-              </span>
-            ))}
-          </div>
-        </nav>
 
         {/* HERO BLOCK STAGE */}
         <section ref={heroRef} className="hero-viewport-section">
@@ -237,8 +284,8 @@ export default function FocalLengthMedia() {
 
           {/* Action Trigger Interface Layout */}
           <div className={`cta-enter ${loaded ? "active" : ""}`} style={{ display: "flex", gap: 24, flexWrap: "wrap", justifyContent: "center", zIndex: 2 }}>
-            <button className="btn-red" onClick={() => document.getElementById('services').scrollIntoView({ behavior: 'smooth' })}>Our Services</button>
-            <button className="btn-outline" onClick={() => document.getElementById('contact').scrollIntoView({ behavior: 'smooth' })}>Get In Touch</button>
+            <button className="btn-red" onClick={() => scrollToSection('services')}>Our Services</button>
+            <button className="btn-outline" onClick={() => scrollToSection('contact')}>Get In Touch</button>
           </div>
 
           {/* Luxury Scroll Track Indicator */}
