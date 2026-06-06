@@ -21,6 +21,11 @@ export default function FocalLengthMedia() {
   const [scrollY, setScrollY] = useState(0);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   
+  // Custom Responsive Dropdown System States
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+  const [selectedService, setSelectedService] = useState("");
+  const dropdownRef = useRef(null);
+  
   // Advanced Kinetic Image tracking vectors
   const containerRef = useRef(null);
   const heroRef = useRef(null);
@@ -63,6 +68,17 @@ export default function FocalLengthMedia() {
     const handleScroll = () => setScrollY(window.scrollY);
     window.addEventListener("scroll", handleScroll, { passive: true });
     return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  // Event handler to collapse custom dropdown if user taps anywhere outside it
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setDropdownOpen(false);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
   }, []);
 
   // 3D Mouse Coordinates Tracking Engine
@@ -126,7 +142,6 @@ export default function FocalLengthMedia() {
       </div>
 
       {/* ULTRA-PREMIUM REFRACTIVE FIXED NAVIGATION INTERFACE */}
-      {/* Isolated completely from layout drop tracking vectors */}
       <nav 
         className={`nav-fixed-anchor ${loaded ? "nav-fade-in" : ""}`}
         style={{
@@ -400,12 +415,42 @@ export default function FocalLengthMedia() {
             <div style={{ display: "flex", flexDirection: "column", gap: 28 }}>
               <div className="contact-input-wrapper"><input className="contact-input" placeholder="Your Name" /></div>
               <div className="contact-input-wrapper"><input className="contact-input" placeholder="Your Email or Phone" /></div>
-              <div className="contact-input-wrapper">
-                <select className="contact-input" defaultValue="">
-                  <option value="" disabled>Service Interest</option>
-                  {services.map(s => <option key={s.title} value={s.title}>{s.title}</option>)}
-                </select>
+              
+              {/* BRAND NEW SYSTEM DROPDOWN ENGINE */}
+              <div className="custom-dropdown-container" ref={dropdownRef}>
+                <div 
+                  className={`custom-dropdown-trigger ${dropdownOpen ? "is-active" : ""}`}
+                  onClick={() => setDropdownOpen(!dropdownOpen)}
+                >
+                  <span style={{ color: selectedService ? "#ffffff" : "rgba(255,255,255,0.3)" }}>
+                    {selectedService || "Service Interest"}
+                  </span>
+                  <span className={`dropdown-chevron ${dropdownOpen ? "rotated" : ""}`}>▼</span>
+                </div>
+
+                <ul className={`custom-dropdown-menu ${dropdownOpen ? "is-open" : ""}`}>
+                  <li 
+                    className="custom-dropdown-item placeholder-option"
+                    onClick={() => { setSelectedService(""); setDropdownOpen(false); }}
+                  >
+                    Service Interest
+                  </li>
+                  {services.map(s => (
+                    <li 
+                      key={s.title} 
+                      className={`custom-dropdown-item ${selectedService === s.title ? "selected" : ""}`}
+                      onClick={() => {
+                        setSelectedService(s.title);
+                        setDropdownOpen(false);
+                      }}
+                    >
+                      <span style={{ marginRight: "12px", display: "inline-block" }}>{s.icon}</span>
+                      {s.title}
+                    </li>
+                  ))}
+                </ul>
               </div>
+
               <div className="contact-input-wrapper"><textarea className="contact-input" placeholder="Tell us about your project..." rows={5} style={{ resize: "none" }} /></div>
               <button className="btn-red" style={{ alignSelf: "flex-start", marginTop: 10 }}>SEND MESSAGE</button>
             </div>

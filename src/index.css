@@ -61,7 +61,7 @@ html {
   .stage-drop-container, .nav-drop-element, .hero-logo-drop {
     transform: none !important;
     filter: none !important;
-    transition: opacity 0.5s ease-important;
+    transition: opacity 0.5s ease !important;
   }
 }
 
@@ -354,27 +354,6 @@ html {
   color: rgba(255, 255, 255, 0.2); 
 }
 
-/* 🚨 NATIVE DROPDOWN VISIBILITY ENGINE ENGINE (FIXES IMAGE_A545E4.PNG) 🚨 */
-select.contact-input {
-  cursor: pointer;
-  appearance: none;
-  -webkit-appearance: none; /* Correctly forces custom layout override engines on physical iOS devices */
-  background-color: #030406 !important; 
-  color: #ffffff !important;           
-  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='%23d4af37' viewBox='0 0 16 16'%3E%3Cpath d='M7.247 11.14 2.451 5.658C1.885 5.013 2.345 4 3.204 4h9.592a1 1 0 0 1 .753 1.659l-4.796 5.48a1 1 0 0 1-1.506 0z'/%3E%3C/svg%3E") !important;
-  background-repeat: no-repeat;
-  background-position: calc(100% - 20px) center;
-  padding-right: 48px;
-}
-
-select.contact-input option {
-  background-color: #090d16 !important; 
-  color: #ffffff !important;           
-  padding: 16px !important;
-  font-family: 'Montserrat', sans-serif;
-  font-size: 16px;
-}
-
 .nav-link {
   font-family: 'Montserrat', sans-serif;
   font-size: clamp(0.7rem, 2vw, 0.78rem);
@@ -529,25 +508,24 @@ select.contact-input option {
 }
 
 /* ==========================================================================
-   7. CUSTOM ULTRA-LUXURY DROPDOWN INTERFACE ENGINE
+   7. CUSTOM RESYNCED ULTRA-LUXURY DROPDOWN INTERFACE ENGINE
    ========================================================================== */
-.custom-select-container {
+.custom-dropdown-container {
   position: relative;
   width: 100%;
   z-index: 10;
 }
 
-/* Multi-Million Dollar Glassmorphic Input Trigger Block */
-.custom-select-trigger {
+/* Premium Glassmorphic Dropdown Trigger Box */
+.custom-dropdown-trigger {
   width: 100%;
   background: linear-gradient(135deg, rgba(255, 255, 255, 0.008) 0%, rgba(255, 255, 255, 0.002) 100%);
-  border: 1px solid rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.015);
   border-bottom: 2px solid rgba(212, 175, 55, 0.25);
   color: #ffffff;
-  padding: clamp(16px, 4vw, 22px) clamp(20px, 5vw, 26px);
+  padding: clamp(16px, 4vw, 22px);
   font-family: 'Montserrat', sans-serif;
-  font-size: 16px; /* Suppresses device auto-zooms safely */
-  letter-spacing: 1px;
+  font-size: 16px; /* Suppresses device automatic zooming */
   border-radius: 8px;
   cursor: pointer;
   display: flex;
@@ -558,7 +536,7 @@ select.contact-input option {
   transition: all 0.6s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.custom-select-container.is-open .custom-select-trigger {
+.custom-dropdown-trigger.is-active {
   background: rgba(212, 175, 55, 0.02);
   border-color: rgba(212, 175, 55, 0.25);
   border-bottom-color: #d4af37;
@@ -566,20 +544,20 @@ select.contact-input option {
               inset 0 1px 0px rgba(212, 175, 55, 0.1);
 }
 
-.custom-select-chevron {
-  font-size: 0.75rem;
-  transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
+.dropdown-chevron {
+  font-size: 0.65rem;
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), color 0.4s ease;
   color: rgba(212, 175, 55, 0.45);
   text-shadow: 0 0 8px rgba(212, 175, 55, 0.3);
 }
 
-.custom-select-container.is-open .custom-select-chevron {
+.dropdown-chevron.rotated {
   transform: rotate(180deg);
   color: #d4af37;
 }
 
-/* Custom Dropdown Option Container (Deep Midnight Obsidian Plate - Fixed for visibility) */
-.custom-dropdown-panel {
+/* Custom Dropdown Option Panel (Deep Midnight Obsidian Plate) */
+.custom-dropdown-menu {
   position: absolute;
   top: calc(100% + 8px);
   left: 0;
@@ -587,8 +565,9 @@ select.contact-input option {
   background: #090d16 !important; 
   border: 1px solid rgba(212, 175, 55, 0.3);
   border-radius: 12px;
+  list-style: none;
   overflow-y: auto;
-  max-height: 280px; /* Protects small device views by preventing container panel spilling off-screen */
+  max-height: 280px; /* Protects smaller mobile viewports from overflow clipping */
   box-shadow: 0 30px 60px rgba(0, 0, 0, 0.95), 
               0 0 30px rgba(212, 175, 55, 0.1);
   opacity: 0;
@@ -600,65 +579,56 @@ select.contact-input option {
   z-index: 999;
   backdrop-filter: blur(30px);
   -webkit-backdrop-filter: blur(30px);
-  
-  /* Precision Touch Inertial Scrolling Rules */
-  -webkit-overflow-scrolling: touch;
+  -webkit-overflow-scrolling: touch; /* Kinetic scrolling fallback */
 }
 
-.custom-select-container.is-open .custom-dropdown-panel {
+.custom-dropdown-menu.is-open {
   opacity: 1;
   transform: translateY(0) scaleX(1);
   pointer-events: auto;
 }
 
-/* Individual Choice Matrix Rows with Kinetic Depth Tracking */
-.custom-select-option {
+/* Individual Choice Rows with Kinetic Depth Tracking */
+.custom-dropdown-item {
   padding: clamp(14px, 3vw, 18px) clamp(20px, 5vw, 26px);
   font-family: 'Montserrat', sans-serif;
-  font-size: 16px; /* Optimized mobile standard layout threshold */
+  font-size: 16px;
   font-weight: 500;
   color: #ffffff !important; 
   background: #090d16 !important; 
   cursor: pointer;
-  display: flex;
-  align-items: center;
-  gap: 14px;
   border-bottom: 1px solid rgba(255, 255, 255, 0.03);
   transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
 }
 
-.custom-select-option:last-child {
+.custom-dropdown-item:last-child {
   border-bottom: none;
 }
 
-.custom-select-option.is-selected {
+.custom-dropdown-item.placeholder-option {
+  color: rgba(255, 255, 255, 0.25) !important;
+}
+
+.custom-dropdown-item.selected {
   background: linear-gradient(90deg, rgba(212, 175, 55, 0.2) 0%, rgba(9, 13, 22, 1) 100%) !important;
   color: #d4af37 !important; 
   font-weight: 700;
   border-left: 3px solid #d4af37;
 }
 
-/* Hover-specific properties isolated into strict pointer rules to secure mobile tap layouts */
+/* Hover behaviors locked strictly behind pointer-capable hardware rules */
 @media (hover: hover) {
-  .custom-select-option:hover {
+  .custom-dropdown-item:hover {
     background: linear-gradient(90deg, rgba(212, 175, 55, 0.15) 0%, rgba(9, 13, 22, 1) 100%) !important;
     color: #ffffff !important;
     padding-left: clamp(24px, 6vw, 34px);
   }
-  .custom-select-option.is-selected {
+  .custom-dropdown-item.selected {
     padding-left: clamp(21px, 5.5vw, 31px);
-  }
-  .custom-select-option:hover .option-icon-prefix {
-    transform: scale(1.2) rotate(6deg);
   }
 }
 
-/* Kinetic Asset Icon Prefixes */
-.option-icon-prefix {
-  font-size: 1.15rem;
-  transition: transform 0.4s ease;
-  display: inline-block;
-}/* --- Desktop Nav Entry Animation --- */
+/* --- Desktop Nav Entry Animation --- */
 .nav-fixed-anchor {
   opacity: 0;
   transform: translateY(-10px);
@@ -680,7 +650,7 @@ select.contact-input option {
   border: none;
   cursor: pointer;
   padding: 0;
-  zIndex: 2000;
+  z-index: 1001; /* Layered explicitly higher than the mobile overlay to remain fully touch clickable */
 }
 
 .hamburger-line {
