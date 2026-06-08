@@ -1,10 +1,18 @@
-import { StrictMode } from 'react'
-import { createRoot } from 'react-dom/client'
-import './index.css'
-import App from './App.jsx'
+import React from 'react'
+import ReactDOM from 'react-dom/client'
 
-createRoot(document.getElementById('root')).render(
-  <StrictMode>
-    <App />
-  </StrictMode>,
-)
+const path = window.location.pathname;
+
+if (path === '/admin') {
+  import('./AdminPanel.jsx').then(mod => {
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      <React.StrictMode><mod.default /></React.StrictMode>
+    );
+  });
+} else {
+  import('./App.jsx').then(mod => {
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      <React.StrictMode><mod.default /></React.StrictMode>
+    );
+  });
+}
