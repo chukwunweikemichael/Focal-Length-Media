@@ -186,7 +186,7 @@ export default function FocalLengthMedia() {
       setActiveTestimonial((prev) =>
         prev === testimonials.length - 1 ? 0 : prev + 1,
       );
-    }, 3000);
+    }, 3500);
 
     return () => clearInterval(interval);
   }, []);
@@ -1243,16 +1243,17 @@ export default function FocalLengthMedia() {
                   value: "focallengthmedia26@gmail.com",
                   icon: "✉️",
                 },
-                {
-                  label: "Project Inquiries",
-                  value: "07067349942",
-                  icon: "📞",
-                },
-                {
-                  label: "Bookings & Support",
-                  value: "08161880830",
-                  icon: "📱",
-                },
+              {
+  label: "Project Inquiries, Bookings & Support",
+  value: (
+    <>
+      <a href="tel:+2347067349942">0706 734 9942</a>
+      <br />
+      <a href="tel:+2348161880830">0816 188 0830</a>
+    </>
+  ),
+  icon: "📞📱",
+}
               ].map((c) => (
                 <div
                   key={c.label}
