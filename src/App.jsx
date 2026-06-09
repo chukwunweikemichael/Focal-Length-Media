@@ -1247,9 +1247,9 @@ export default function FocalLengthMedia() {
   label: "Project Inquiries, Bookings & Support",
   value: (
     <>
-      <a href="tel:+2347067349942">0706 734 9942</a>
+      <a>0706 734 9942</a>
       <br />
-      <a href="tel:+2348161880830">0816 188 0830</a>
+      <a>0816 188 0830</a>
     </>
   ),
   icon: "📞📱",
