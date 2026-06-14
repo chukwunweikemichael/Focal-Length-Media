@@ -18,15 +18,6 @@ router.post('/seed', async (req, res) => {
   }
 });
 
-/* Reset admin */
-router.delete('/reset', async (req, res) => {
-  try {
-    await Admin.deleteMany({});
-    res.json({ success: true, message: 'All admins deleted. Run /seed again.' });
-  } catch (err) {
-    res.status(500).json({ error: err.message });
-  }
-});
 /* ── Login ── */
 router.post('/login', async (req, res) => {
   try {

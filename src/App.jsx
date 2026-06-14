@@ -1,6 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import "./index.css";
-
+import API_URL from "./config.js";
 const services = [
   {
     icon: "🎬",
@@ -113,7 +113,7 @@ export default function FocalLengthMedia() {
     }
     setSending(true);
     try {
-      const res = await fetch("http://localhost:5000/api/contact", {
+      const res = await fetch(`${API_URL}/api/contact`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

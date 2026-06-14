@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-
-const API = 'http://localhost:5000/api/admin';
-
+import API_URL from './config';
+const API = `${API_URL}/api/admin`;
 export default function AdminPanel() {
   const [token, setToken] = useState(null);
   const [contacts, setContacts] = useState([]);
