@@ -7,7 +7,14 @@ connectDB();
 
 const app = express();
 
-app.use(cors({ origin: 'http://localhost:5173' }));
+app.use(cors({
+  origin: [
+    'http://localhost:5173',
+    'https://focal-length-media.vercel.app',
+    'https://focal-length-media-git-main-chukwunweike-michaels-projects.vercel.app'
+  ]
+}));
+
 app.use(express.json());
 
 app.use('/api/contact', require('./routes/contact'));
