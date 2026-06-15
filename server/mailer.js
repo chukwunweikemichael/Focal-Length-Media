@@ -1,18 +1,11 @@
-const nodemailer = require('nodemailer');
-
-const transporter = nodemailer.createTransport({
-  service: 'gmail',
-  auth: {
-    user: process.env.EMAIL_USER,
-    pass: process.env.EMAIL_PASS
-  }
-});
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 
 exports.sendEmail = async ({ subject, html }) => {
   try {
-    await transporter.sendMail({
-      from: `"Focal Length Media" <${process.env.EMAIL_USER}>`,
-      to:   process.env.EMAIL_TO,
+    await resend.emails.send({
+      from: 'FLM <onboarding@resend.dev>',
+      to: process.env.EMAIL_TO,
       subject,
       html
     });
@@ -21,3 +14,4 @@ exports.sendEmail = async ({ subject, html }) => {
     console.error('Email error:', err.message);
   }
 };
+RESEND_API_KEY = re_X3ep8mEH_5E8EjHnmuosoQuhgpc1HmpiR
