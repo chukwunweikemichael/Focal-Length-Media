@@ -14,4 +14,3 @@ exports.sendEmail = async ({ subject, html }) => {
     console.error('Email error:', err.message);
   }
 };
-RESEND_API_KEY = re_LAsWRJQM_JKjxcWbuFFjWJiXXiXonVejC
