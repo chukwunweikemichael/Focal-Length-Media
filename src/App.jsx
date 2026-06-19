@@ -588,25 +588,32 @@ export default function FocalLengthMedia() {
         </div>
 
         {/* Desktop Menu Links */}
-        <div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
-          {["Services", "About", "Faq", "Contact"].map((l) => (
-            <span
-              key={l}
-              className="nav-link"
-              onClick={() => scrollToSection(l)}
-              style={{
-                cursor: "pointer",
-                fontFamily: "'Montserrat', sans-serif",
-                fontSize: "0.8rem",
-                fontWeight: 600,
-                letterSpacing: "2px",
-                textTransform: "uppercase",
-              }}
-            >
-              {l}
-            </span>
-          ))}
-        </div>
+    {/* Desktop Menu Links */}
+<div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
+  {["Services", "About", "Faq", "Contact"].map((l) => (
+    <span
+      key={l}
+      className="nav-link"
+      onClick={() => {
+        if (l === "About") {
+          window.location.href = "/about";
+        } else {
+          scrollToSection(l);
+        }
+      }}
+      style={{
+        cursor: "pointer",
+        fontFamily: "'Montserrat', sans-serif",
+        fontSize: "0.8rem",
+        fontWeight: 600,
+        letterSpacing: "2px",
+        textTransform: "uppercase",
+      }}
+    >
+      {l}
+    </span>
+  ))}
+</div>
 
         {/* Hamburger Trigger */}
         <button
