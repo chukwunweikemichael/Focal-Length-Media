@@ -43,7 +43,7 @@ router.get('/contacts', auth, async (req, res) => {
   }
 });
 
-/* ── Update status ── */
+/* ── Update status ── */ 
 router.patch('/contacts/:id', auth, async (req, res) => {
   try {
     await Contact.findByIdAndUpdate(req.params.id, { status: req.body.status });
@@ -62,5 +62,4 @@ router.delete('/contacts/:id', auth, async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
-
 module.exports = router;
