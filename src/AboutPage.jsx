@@ -5,10 +5,10 @@ const DIRECTOR_1_IMG = "/team/olaniyan-olugbenga.jpg";
 const DIRECTOR_2_IMG = "/team/alagbile-matthew.jpg";
 
 const pillars = [
-  { icon: "🎥", title: "Video Production", desc: "Commercials, brand films, documentaries, event coverage." },
-  { icon: "✍️", title: "Creative Direction", desc: "Scripting, storyboarding, visual identity." },
-  { icon: "🎞️", title: "Post Production", desc: "Editing, color grading, motion graphics, sound design." },
-  { icon: "📱", title: "Digital Content", desc: "Short-form content for TikTok, Instagram & YouTube that actually gets watched." },
+  { num: "01", icon: "🎥", title: "Video Production", desc: "Commercials, brand films, documentaries, event coverage." },
+  { num: "02", icon: "✍️", title: "Creative Direction", desc: "Scripting, storyboarding, visual identity." },
+  { num: "03", icon: "🎞️", title: "Post Production", desc: "Editing, color grading, motion graphics, sound design." },
+  { num: "04", icon: "📱", title: "Digital Content", desc: "Short-form content for TikTok, Instagram & YouTube that actually gets watched." },
 ];
 
 const serviceGroups = [
@@ -101,117 +101,210 @@ export default function AboutPage() {
   useEffect(() => { const t = setTimeout(() => setLoaded(true), 80); return () => clearTimeout(t); }, []);
 
   return (
-    <div style={{ background: "#030406", color: "#fff", minHeight: "100vh", fontFamily: "'Montserrat', sans-serif", overflowX: "hidden" }}>
+    <div style={{ background: "#050607", color: "#fff", minHeight: "100vh", fontFamily: "'Montserrat', sans-serif", overflowX: "hidden" }}>
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;1,400&family=Bebas+Neue&family=Montserrat:wght@300;400;500;600;700;800&display=swap');
         *{box-sizing:border-box;}
-        .fu{opacity:0;transform:translateY(28px);transition:opacity .8s cubic-bezier(.16,1,.3,1),transform .8s cubic-bezier(.16,1,.3,1);}
+        html, body { overflow-x: hidden; max-width: 100vw; }
+
+        .fu{opacity:0;transform:translateY(26px);transition:opacity .9s cubic-bezier(.16,1,.3,1),transform .9s cubic-bezier(.16,1,.3,1);}
         .fu.show{opacity:1;transform:translateY(0);}
-        .d1{transition-delay:.05s!important;} .d2{transition-delay:.15s!important;} .d3{transition-delay:.25s!important;}
-        .d4{transition-delay:.35s!important;} .d5{transition-delay:.45s!important;}
-        .pillar-card{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:14px;padding:32px 26px;transition:all .4s cubic-bezier(.16,1,.3,1);}
-        .pillar-card:hover{background:rgba(212,175,55,0.025);border-color:rgba(212,175,55,0.18);transform:translateY(-4px);}
-        .svc-card{background:rgba(255,255,255,0.012);border:1px solid rgba(255,255,255,0.035);border-radius:10px;padding:18px 20px;transition:all .3s ease;}
-        .svc-card:hover{background:rgba(212,175,55,0.02);border-color:rgba(212,175,55,0.15);}
-        .value-row{border-bottom:1px solid rgba(255,255,255,0.04);padding:30px 0;display:flex;gap:28px;align-items:flex-start;}
-        .value-row:last-child{border-bottom:none;}
-        .team-card{background:rgba(255,255,255,0.015);border:1px solid rgba(255,255,255,0.04);border-radius:20px;overflow:hidden;transition:all .4s ease;}
-        .team-card:hover{border-color:rgba(212,175,55,0.2);box-shadow:0 30px 60px rgba(0,0,0,0.5);}
-        .team-photo-wrap{position:relative;width:100%;aspect-ratio:4/5;overflow:hidden;background:#0a0d14;}
-        .team-photo-wrap img{width:100%;height:100%;object-fit:cover;filter:grayscale(15%) contrast(1.05);transition:filter .4s ease;}
-        .team-card:hover .team-photo-wrap img{filter:grayscale(0%) contrast(1.1);}
-        .team-photo-overlay{position:absolute;inset:0;background:linear-gradient(180deg,transparent 50%,rgba(3,4,6,0.95) 100%);}
-        .manifesto-line{border-bottom:1px solid rgba(255,255,255,0.04);padding:26px 0;}
-        .manifesto-line:last-child{border-bottom:none;}
-        .gold{color:#d4af37;}
-        .section-label{font-size:0.72rem;font-weight:800;letter-spacing:4px;color:#d4af37;text-transform:uppercase;border-bottom:1px solid rgba(212,175,55,0.3);padding-bottom:6px;display:inline-block;}
+        .d1{transition-delay:.05s!important;} .d2{transition-delay:.14s!important;} .d3{transition-delay:.23s!important;}
+        .d4{transition-delay:.32s!important;} .d5{transition-delay:.41s!important;}
+
+        .serif { font-family: 'Cormorant Garamond', serif; }
+        .gold { color: #cda44e; }
+        .gold-grad {
+          background: linear-gradient(180deg,#fff 30%,#e9dfc4 60%,#cda44e 100%);
+          -webkit-background-clip: text; background-clip: text; -webkit-text-fill-color: transparent;
+        }
+
+        .eyebrow {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 0.68rem; font-weight: 700; letter-spacing: 4px;
+          color: #cda44e; text-transform: uppercase;
+          display: flex; align-items: center; gap: 14px;
+        }
+        .eyebrow .tick { width: 22px; height: 1px; background: rgba(205,164,78,0.5); }
+
+        .ornament {
+          display: flex; align-items: center; justify-content: center; gap: 16px; padding: 0;
+        }
+        .ornament .line { height: 1px; width: 60px; background: linear-gradient(90deg, transparent, rgba(205,164,78,0.45)); }
+        .ornament .line.right { background: linear-gradient(90deg, rgba(205,164,78,0.45), transparent); }
+        .ornament .diamond { width: 6px; height: 6px; background: #cda44e; transform: rotate(45deg); box-shadow: 0 0 10px rgba(205,164,78,0.5); }
+
+        .pillar-card {
+          position: relative;
+          background: linear-gradient(160deg, rgba(255,255,255,0.025), rgba(255,255,255,0.005));
+          border: 1px solid rgba(255,255,255,0.06);
+          border-radius: 4px;
+          padding: 40px 30px 34px;
+          transition: all .45s cubic-bezier(.16,1,.3,1);
+        }
+        .pillar-card::before {
+          content: '';
+          position: absolute; top: 0; left: 0; width: 0%; height: 2px;
+          background: linear-gradient(90deg, #cda44e, transparent);
+          transition: width .5s cubic-bezier(.16,1,.3,1);
+        }
+        .pillar-card:hover { transform: translateY(-6px); border-color: rgba(205,164,78,0.3); box-shadow: 0 30px 60px rgba(0,0,0,0.5); }
+        .pillar-card:hover::before { width: 100%; }
+        .pillar-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 0.95rem; color: rgba(205,164,78,0.45); letter-spacing: 1px; margin-bottom: 18px; }
+
+        .svc-card {
+          background: rgba(255,255,255,0.012);
+          border-left: 2px solid rgba(205,164,78,0.18);
+          border-radius: 0 8px 8px 0;
+          padding: 16px 20px;
+          transition: all .3s ease;
+        }
+        .svc-card:hover { background: rgba(205,164,78,0.035); border-left-color: #cda44e; transform: translateX(4px); }
+
+        .value-row { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 34px 0; display: flex; gap: 32px; align-items: flex-start; }
+        .value-row:last-child { border-bottom: none; }
+        .value-num { font-family: 'Cormorant Garamond', serif; font-style: italic; font-size: 2.4rem; color: rgba(205,164,78,0.28); flex-shrink: 0; line-height: 1; min-width: 56px; }
+
+        .team-card {
+          background: rgba(255,255,255,0.018);
+          border: 1px solid rgba(255,255,255,0.06);
+          border-radius: 6px;
+          overflow: hidden;
+          transition: all .5s cubic-bezier(.16,1,.3,1);
+        }
+        .team-card:hover { border-color: rgba(205,164,78,0.28); box-shadow: 0 40px 80px rgba(0,0,0,0.55); transform: translateY(-3px); }
+        .team-photo-wrap { position: relative; width: 100%; aspect-ratio: 4/5; overflow: hidden; background: #0a0d14; }
+        .team-photo-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(35%) contrast(1.08) brightness(0.96); transition: filter .6s ease, transform .6s ease; transform: scale(1.01); }
+        .team-card:hover .team-photo-wrap img { filter: grayscale(0%) contrast(1.1) brightness(1); transform: scale(1.04); }
+        .team-photo-overlay { position: absolute; inset: 0; background: linear-gradient(180deg, transparent 45%, rgba(5,6,7,0.97) 100%); }
+        .team-frame { position: absolute; inset: 14px; border: 1px solid rgba(205,164,78,0.25); pointer-events: none; }
+
+        .manifesto-line { border-bottom: 1px solid rgba(255,255,255,0.05); padding: 30px 0; }
+        .manifesto-line:last-child { border-bottom: none; }
+
+        .credential-row { display: flex; gap: 12px; align-items: flex-start; margin-bottom: 9px; font-size: 0.78rem; color: rgba(255,255,255,0.42); line-height: 1.6; }
+        .credential-mark { color: #cda44e; flex-shrink: 0; font-family: 'Cormorant Garamond', serif; font-style: italic; }
+
+        .back-link { color: rgba(255,255,255,0.5); font-size: 0.75rem; font-weight: 600; letter-spacing: 2px; text-transform: uppercase; text-decoration: none; transition: color .25s; position: relative; }
+        .back-link:hover { color: #cda44e; }
+
+        /* ============ RESPONSIVE ============ */
+        @media (max-width: 1024px) {
+          .about-grid { gap: 56px !important; }
+        }
+
+        @media (max-width: 768px) {
+          .nav-bar { padding: 18px 6% !important; }
+          .nav-bar .brand-text { font-size: 0.68rem !important; letter-spacing: 3px !important; }
+          .hero-sec { padding: 120px 6% 50px !important; min-height: 62vh !important; }
+          .about-sec { padding: 80px 6% 60px !important; }
+          .pillars-sec { padding: 0 6% 70px !important; }
+          .services-sec { padding: 70px 6% !important; }
+          .values-sec { padding: 70px 6% !important; }
+          .manifesto-sec { padding: 70px 6% !important; }
+          .team-sec { padding: 80px 6% 90px !important; }
+          .team-card-grid { gap: 28px !important; }
+          .about-grid { display: flex !important; flex-direction: column !important; gap: 40px !important; }
+          .contact-grid-info { grid-template-columns: 1fr !important; gap: 16px !important; }
+        }
+
+        @media (max-width: 480px) {
+          .hero-eyebrow { font-size: 0.6rem !important; letter-spacing: 2.5px !important; }
+          .pillar-card { padding: 30px 22px 26px !important; }
+          .team-photo-wrap { aspect-ratio: 1/1 !important; }
+          .ornament .line { width: 32px !important; }
+          .svc-card { padding: 14px 16px !important; }
+          .value-row { gap: 20px !important; padding: 26px 0 !important; }
+          .value-num { font-size: 1.9rem !important; min-width: 40px !important; }
+        }
       `}</style>
 
       {/* ===== NAV ===== */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "22px 6%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(3,4,6,0.85)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.04)" }}>
+      <nav className="nav-bar" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "22px 6%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(5,6,7,0.88)", backdropFilter: "blur(24px)", borderBottom: "1px solid rgba(255,255,255,0.05)" }}>
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 16, textDecoration: "none" }}>
           <img src={LOGO_URL} alt="FLM" style={{ height: 34, width: 34, objectFit: "cover", borderRadius: 6 }} />
-          <span style={{ color: "#fff", fontSize: "0.8rem", fontWeight: 800, letterSpacing: 5 }}>FOCAL LENGTH</span>
+          <span className="brand-text" style={{ color: "#fff", fontSize: "0.8rem", fontWeight: 800, letterSpacing: 5 }}>FOCAL LENGTH</span>
         </a>
-        <a href="/" style={{ color: "rgba(255,255,255,0.5)", fontSize: "0.75rem", fontWeight: 600, letterSpacing: 2, textTransform: "uppercase", textDecoration: "none" }}>
-          ← Back Home
-        </a>
+        <a href="/" className="back-link">← Back Home</a>
       </nav>
 
       {/* ===== HERO ===== */}
-      <section style={{ minHeight: "78vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "140px 6% 60px", position: "relative", background: "radial-gradient(circle at 50% 30%, #0a0d14 0%, #030406 75%)" }}>
-        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(212,175,55,0.01) 1px,transparent 1px),linear-gradient(90deg,rgba(212,175,55,0.01) 1px,transparent 1px)", backgroundSize: "70px 70px" }} />
+      <section className="hero-sec" style={{ minHeight: "76vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "150px 6% 60px", position: "relative", background: "radial-gradient(ellipse at 50% 25%, #0c0f14 0%, #050607 72%)" }}>
+        <div style={{ position: "absolute", inset: 0, backgroundImage: "linear-gradient(rgba(205,164,78,0.012) 1px,transparent 1px),linear-gradient(90deg,rgba(205,164,78,0.012) 1px,transparent 1px)", backgroundSize: "72px 72px" }} />
         <div className={`fu ${loaded ? "show" : ""}`} style={{ position: "relative", zIndex: 2 }}>
-          <div style={{ fontSize: "0.7rem", letterSpacing: 4, color: "rgba(255,255,255,0.35)", marginBottom: 24, fontWeight: 600 }}>
+          <div className="hero-eyebrow" style={{ fontSize: "0.7rem", letterSpacing: 4, color: "rgba(255,255,255,0.4)", marginBottom: 26, fontWeight: 600 }}>
             RC: 9528632 &nbsp;·&nbsp; LAGOS, NIGERIA
           </div>
-          <h1 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.6rem,7vw,5.5rem)", letterSpacing: "0.1em", lineHeight: 1, margin: 0, background: "linear-gradient(180deg,#fff 35%,#dfdacb 65%,#d4af37 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+          <h1 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.4rem,7vw,5.4rem)", letterSpacing: "0.09em", lineHeight: 1, margin: 0 }}>
             COMPANY PROFILE
           </h1>
-          <p style={{ fontSize: "clamp(0.85rem,2vw,1.1rem)", letterSpacing: "0.35em", color: "rgba(255,255,255,0.4)", textTransform: "uppercase", marginTop: 22, fontWeight: 300 }}>
+          <p className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1rem,2.4vw,1.4rem)", letterSpacing: "0.06em", color: "rgba(255,255,255,0.5)", marginTop: 22, fontWeight: 400 }}>
             The Future
           </p>
         </div>
       </section>
 
+      <div className="ornament"><span className="line" /><span className="diamond" /><span className="line right" /></div>
+
       {/* ===== ABOUT US ===== */}
-      <section className={`fu d1 ${loaded ? "show" : ""}`} style={{ padding: "100px 6% 90px", maxWidth: 980, margin: "0 auto" }}>
-        <span className="section-label" style={{ marginBottom: 28, display: "block", width: "fit-content" }}>About Us</span>
-        <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,4.5vw,3.4rem)", letterSpacing: "0.04em", lineHeight: 1.15, margin: "0 0 32px" }}>
+      <section className={`about-sec fu d1 ${loaded ? "show" : ""}`} style={{ padding: "100px 6% 90px", maxWidth: 960, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 26 }}><span className="tick" />About Us</div>
+        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.7rem,4vw,2.9rem)", fontWeight: 500, letterSpacing: "0.01em", lineHeight: 1.3, margin: "0 0 32px", color: "#f4f1e9" }}>
           A creative production company that turns ideas and stories into <span className="gold">magical visuals</span>.
         </h2>
-        <p style={{ fontSize: "1.02rem", lineHeight: 2, color: "rgba(255,255,255,0.55)", fontWeight: 300, marginBottom: 24 }}>
+        <p style={{ fontSize: "1rem", lineHeight: 2, color: "rgba(255,255,255,0.5)", fontWeight: 300, marginBottom: 28 }}>
           At Focal Length Media, we believe every brand, artist and idea has a story worth telling right. Our focus is on the in-between moments — the details, emotions and perspective that make content stick. From corporate campaigns and documentaries to music videos and social content, we handle concept to final cut with one goal: make it sharp, cinematic and unforgettable.
         </p>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(2, auto)", gap: "14px 60px", marginTop: 36 }}>
+        <div className="contact-grid-info" style={{ display: "grid", gridTemplateColumns: "repeat(2, auto)", gap: "16px 60px", marginTop: 36, borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 30 }}>
           <div>
-            <div style={{ fontSize: "0.7rem", letterSpacing: 3, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: 6 }}>Address</div>
-            <div style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.7)" }}>2 Bolaji Street, off Kudirat Abiola Way, Ikeja, Lagos</div>
+            <div style={{ fontSize: "0.66rem", letterSpacing: 3, color: "rgba(205,164,78,0.7)", textTransform: "uppercase", marginBottom: 7, fontWeight: 700 }}>Address</div>
+            <div style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.65)" }}>2 Bolaji Street, off Kudirat Abiola Way, Ikeja, Lagos</div>
           </div>
           <div>
-            <div style={{ fontSize: "0.7rem", letterSpacing: 3, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", marginBottom: 6 }}>Contact</div>
-            <div style={{ fontSize: "0.92rem", color: "rgba(255,255,255,0.7)" }}>focallengthmedia26@gmail.com · 0706 734 9942</div>
+            <div style={{ fontSize: "0.66rem", letterSpacing: 3, color: "rgba(205,164,78,0.7)", textTransform: "uppercase", marginBottom: 7, fontWeight: 700 }}>Contact</div>
+            <div style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.65)" }}>focallengthmedia26@gmail.com · 0706 734 9942</div>
           </div>
         </div>
       </section>
 
       {/* ===== WHAT WE DO — 4 PILLARS ===== */}
-      <section className={`fu d2 ${loaded ? "show" : ""}`} style={{ padding: "0 6% 100px", maxWidth: 1200, margin: "0 auto" }}>
+      <section className={`pillars-sec fu d2 ${loaded ? "show" : ""}`} style={{ padding: "0 6% 110px", maxWidth: 1200, margin: "0 auto" }}>
         <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 18 }}>
           {pillars.map((p) => (
             <div key={p.title} className="pillar-card">
-              <div style={{ fontSize: "1.8rem", marginBottom: 16 }}>{p.icon}</div>
-              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.25rem", letterSpacing: "0.06em", margin: "0 0 10px" }}>{p.title}</h3>
-              <p style={{ fontSize: "0.84rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, margin: 0, fontWeight: 300 }}>{p.desc}</p>
+              <div className="pillar-num">{p.num}</div>
+              <div style={{ fontSize: "1.7rem", marginBottom: 16 }}>{p.icon}</div>
+              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.2rem", letterSpacing: "0.06em", margin: "0 0 10px", color: "#f4f1e9" }}>{p.title}</h3>
+              <p style={{ fontSize: "0.83rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, margin: 0, fontWeight: 300 }}>{p.desc}</p>
             </div>
           ))}
         </div>
-        <p style={{ textAlign: "center", marginTop: 50, fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.3rem", letterSpacing: "0.08em", color: "rgba(255,255,255,0.55)" }}>
+        <p className="serif" style={{ textAlign: "center", marginTop: 56, fontStyle: "italic", fontSize: "clamp(1.1rem,2.4vw,1.5rem)", letterSpacing: "0.01em", color: "rgba(255,255,255,0.6)" }}>
           Get the shot. Tell the story. <span className="gold">Make it matter.</span>
         </p>
       </section>
 
       {/* ===== SERVICES ===== */}
-      <section style={{ background: "linear-gradient(135deg,#090d14 0%,#05070a 60%,#030406 100%)", padding: "100px 6%", borderTop: "1px solid rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
+      <section className="services-sec" style={{ background: "linear-gradient(135deg,#0a0d12 0%,#06070a 60%,#050607 100%)", padding: "110px 6%", borderTop: "1px solid rgba(255,255,255,0.025)", borderBottom: "1px solid rgba(255,255,255,0.025)" }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
-          <div className={`fu ${loaded ? "show" : ""}`} style={{ textAlign: "center", marginBottom: 64 }}>
-            <span className="section-label">Services</span>
-            <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.2rem,5vw,3.6rem)", letterSpacing: "0.06em", margin: "22px 0 0" }}>
-              EVERYTHING UNDER <span className="gold">ONE LENS</span>
+          <div className={`fu ${loaded ? "show" : ""}`} style={{ textAlign: "center", marginBottom: 68 }}>
+            <div className="eyebrow" style={{ justifyContent: "center" }}><span className="tick" />Services<span className="tick" /></div>
+            <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,4.6vw,3.4rem)", letterSpacing: "0.05em", margin: "24px 0 0" }}>
+              EVERYTHING UNDER ONE LENS
             </h2>
           </div>
 
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(360px,1fr))", gap: 40 }}>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(340px,1fr))", gap: 44 }}>
             {serviceGroups.map((g, gi) => (
               <div key={g.title} className={`fu d${Math.min(gi + 1, 5)} ${loaded ? "show" : ""}`}>
-                <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.15rem", letterSpacing: "0.1em", color: "#d4af37", margin: "0 0 18px", paddingBottom: 12, borderBottom: "1px solid rgba(212,175,55,0.15)" }}>
+                <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.05rem", letterSpacing: "0.1em", color: "#cda44e", margin: "0 0 18px", paddingBottom: 14, borderBottom: "1px solid rgba(205,164,78,0.18)" }}>
                   {g.title.toUpperCase()}
                 </h3>
-                <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+                <div style={{ display: "flex", flexDirection: "column", gap: 9 }}>
                   {g.items.map(([t, d]) => (
                     <div key={t} className="svc-card">
-                      <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "#fff", marginBottom: 4 }}>{t}</div>
-                      <div style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.4)", fontWeight: 300 }}>{d}</div>
+                      <div style={{ fontSize: "0.86rem", fontWeight: 600, color: "#f4f1e9", marginBottom: 4 }}>{t}</div>
+                      <div style={{ fontSize: "0.76rem", color: "rgba(255,255,255,0.38)", fontWeight: 300 }}>{d}</div>
                     </div>
                   ))}
                 </div>
@@ -222,36 +315,36 @@ export default function AboutPage() {
       </section>
 
       {/* ===== VALUES ===== */}
-      <section className={`fu ${loaded ? "show" : ""}`} style={{ padding: "100px 6%", maxWidth: 900, margin: "0 auto" }}>
-        <span className="section-label">Our Values</span>
-        <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,4.5vw,3.2rem)", letterSpacing: "0.05em", margin: "22px 0 50px" }}>
-          WHAT WE STAND <span className="gold">FOR</span>
+      <section className={`values-sec fu ${loaded ? "show" : ""}`} style={{ padding: "110px 6%", maxWidth: 880, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 26 }}><span className="tick" />Our Values</div>
+        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 500, margin: "0 0 50px", color: "#f4f1e9" }}>
+          What we stand <span className="gold">for</span>
         </h2>
         {values.map((v) => (
           <div key={v.num} className="value-row">
-            <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "2.2rem", color: "rgba(212,175,55,0.3)", flexShrink: 0, lineHeight: 1 }}>{v.num}</div>
+            <div className="value-num">{v.num}</div>
             <div>
-              <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.2rem", letterSpacing: "0.08em", margin: "0 0 8px", color: "#fff" }}>{v.title.toUpperCase()}</h4>
-              <p style={{ fontSize: "0.9rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.8, margin: 0, fontWeight: 300, maxWidth: 600 }}>{v.desc}</p>
+              <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.15rem", letterSpacing: "0.08em", margin: "0 0 9px", color: "#fff" }}>{v.title.toUpperCase()}</h4>
+              <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.42)", lineHeight: 1.85, margin: 0, fontWeight: 300, maxWidth: 600 }}>{v.desc}</p>
             </div>
           </div>
         ))}
       </section>
 
       {/* ===== MANIFESTO ===== */}
-      <section style={{ background: "linear-gradient(135deg,#1a0505 0%,#0f0f0f 55%,#030406 100%)", padding: "100px 6%", position: "relative", overflow: "hidden" }}>
-        <div style={{ position: "absolute", right: "-8%", top: "50%", transform: "translateY(-50%)", width: 700, height: 700, borderRadius: "50%", background: "radial-gradient(circle, rgba(192,57,43,0.05) 0%, transparent 70%)", pointerEvents: "none" }} />
-        <div className={`fu ${loaded ? "show" : ""}`} style={{ maxWidth: 800, margin: "0 auto", position: "relative" }}>
-          <span className="section-label">The Manifesto</span>
-          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.8rem,4vw,2.6rem)", letterSpacing: "0.04em", margin: "22px 0 46px" }}>
-            HOW WE <span style={{ color: "#c0392b" }}>MOVE</span>
+      <section className="manifesto-sec" style={{ background: "linear-gradient(135deg,#1c0a0a 0%,#0e0c0a 55%,#050607 100%)", padding: "110px 6%", position: "relative", overflow: "hidden" }}>
+        <div style={{ position: "absolute", right: "-8%", top: "50%", transform: "translateY(-50%)", width: 680, height: 680, borderRadius: "50%", background: "radial-gradient(circle, rgba(189,44,44,0.06) 0%, transparent 70%)", pointerEvents: "none" }} />
+        <div className={`fu ${loaded ? "show" : ""}`} style={{ maxWidth: 780, margin: "0 auto", position: "relative" }}>
+          <div className="eyebrow" style={{ marginBottom: 26 }}><span className="tick" />The Manifesto</div>
+          <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.6rem,3.6vw,2.4rem)", fontWeight: 500, margin: "0 0 48px", color: "#f4f1e9" }}>
+            How we <span style={{ color: "#bd2c2c", fontStyle: "normal", fontFamily: "'Bebas Neue', sans-serif", letterSpacing: "0.03em" }}>MOVE</span>
           </h2>
           {manifesto.map((m, i) => (
             <div key={m.ph} className="manifesto-line">
-              <div style={{ fontSize: "0.68rem", letterSpacing: 3, color: "#c0392b", fontWeight: 700, marginBottom: 8, textTransform: "uppercase" }}>
+              <div style={{ fontSize: "0.66rem", letterSpacing: 3, color: "#bd2c2c", fontWeight: 700, marginBottom: 9, textTransform: "uppercase" }}>
                 0{i + 1} — {m.ph}
               </div>
-              <div style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.2rem,2.5vw,1.7rem)", letterSpacing: "0.02em", color: "rgba(255,255,255,0.9)" }}>
+              <div className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.15rem,2.6vw,1.6rem)", letterSpacing: "0.01em", color: "rgba(255,255,255,0.9)", fontWeight: 500 }}>
                 {m.en}
               </div>
             </div>
@@ -260,40 +353,41 @@ export default function AboutPage() {
       </section>
 
       {/* ===== LEADERSHIP TEAM ===== */}
-      <section className={`fu ${loaded ? "show" : ""}`} style={{ padding: "110px 6% 130px", maxWidth: 1200, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 64 }}>
-          <span className="section-label">Leadership</span>
-          <h2 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.2rem,5vw,3.6rem)", letterSpacing: "0.06em", margin: "22px 0 0" }}>
-            THE MANAGEMENT <span className="gold">TEAM</span>
+      <section className={`team-sec fu ${loaded ? "show" : ""}`} style={{ padding: "120px 6% 130px", maxWidth: 1200, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 68 }}>
+          <div className="eyebrow" style={{ justifyContent: "center" }}><span className="tick" />Leadership<span className="tick" /></div>
+          <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem,4.6vw,3.4rem)", letterSpacing: "0.05em", margin: "24px 0 0" }}>
+            THE MANAGEMENT TEAM
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(380px,1fr))", gap: 40 }}>
+        <div className="team-card-grid" style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(380px,1fr))", gap: 44 }}>
           {team.map((m) => (
             <div key={m.name} className="team-card">
               <div className="team-photo-wrap">
                 <img src={m.img} alt={m.name} onError={(e) => { e.target.style.display = "none"; }} />
+                <div className="team-frame" />
                 <div className="team-photo-overlay" />
-                <div style={{ position: "absolute", bottom: 24, left: 28, right: 28 }}>
-                  <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.7rem", letterSpacing: "0.04em", margin: 0, color: "#fff" }}>
+                <div style={{ position: "absolute", bottom: 26, left: 28, right: 28 }}>
+                  <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.6rem", letterSpacing: "0.04em", margin: 0, color: "#fff" }}>
                     {m.name}
                   </h3>
-                  <div style={{ fontSize: "0.8rem", color: "#d4af37", fontWeight: 600, letterSpacing: "0.05em", marginTop: 4 }}>
+                  <div className="serif" style={{ fontStyle: "italic", fontSize: "0.88rem", color: "#cda44e", fontWeight: 500, letterSpacing: "0.02em", marginTop: 5 }}>
                     "{m.alias}" · {m.role}
                   </div>
                 </div>
               </div>
-              <div style={{ padding: "28px 28px 32px" }}>
-                <p style={{ fontSize: "0.86rem", lineHeight: 1.85, color: "rgba(255,255,255,0.48)", fontWeight: 300, margin: "0 0 16px" }}>
+              <div style={{ padding: "30px 28px 32px" }}>
+                <p style={{ fontSize: "0.85rem", lineHeight: 1.9, color: "rgba(255,255,255,0.45)", fontWeight: 300, margin: "0 0 16px" }}>
                   {m.bio}
                 </p>
-                <p style={{ fontSize: "0.86rem", lineHeight: 1.85, color: "rgba(255,255,255,0.48)", fontWeight: 300, margin: "0 0 20px" }}>
+                <p style={{ fontSize: "0.85rem", lineHeight: 1.9, color: "rgba(255,255,255,0.45)", fontWeight: 300, margin: "0 0 22px" }}>
                   {m.bio2}
                 </p>
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.06)", paddingTop: 18 }}>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.07)", paddingTop: 20 }}>
                   {m.credentials.map((c) => (
-                    <div key={c} style={{ display: "flex", gap: 10, alignItems: "flex-start", marginBottom: 8, fontSize: "0.78rem", color: "rgba(255,255,255,0.4)" }}>
-                      <span style={{ color: "#d4af37", flexShrink: 0 }}>—</span>{c}
+                    <div key={c} className="credential-row">
+                      <span className="credential-mark">—</span>{c}
                     </div>
                   ))}
                 </div>
@@ -303,15 +397,17 @@ export default function AboutPage() {
         </div>
       </section>
 
+      <div className="ornament" style={{ paddingBottom: 60 }}><span className="line" /><span className="diamond" /><span className="line right" /></div>
+
       {/* ===== FOOTER ===== */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.03)", padding: "50px 6%", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between", background: "#020304" }}>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.04)", padding: "50px 6%", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between", background: "#020304" }}>
         <div style={{ display: "flex", alignItems: "center", gap: 14 }}>
           <img src={LOGO_URL} alt="FLM" style={{ height: 30, borderRadius: 4, opacity: 0.85 }} />
-          <span style={{ fontSize: "0.65rem", letterSpacing: 4, color: "rgba(255,255,255,0.2)", textTransform: "uppercase", fontWeight: 600 }}>
+          <span style={{ fontSize: "0.62rem", letterSpacing: 4, color: "rgba(255,255,255,0.22)", textTransform: "uppercase", fontWeight: 600 }}>
             RC: 9528632 · Lagos, Nigeria
           </span>
         </div>
-        <a href="/" style={{ fontSize: "0.7rem", color: "rgba(255,255,255,0.25)", letterSpacing: 2, textDecoration: "none" }}>← Back to Home</a>
+        <a href="/" className="back-link" style={{ fontSize: "0.68rem" }}>← Back to Home</a>
       </footer>
     </div>
   );
