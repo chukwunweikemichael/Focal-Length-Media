@@ -105,6 +105,14 @@ export default function FocalLengthMedia() {
   const heroRef = useRef(null);
   const [mouseCoords, setMouseCoords] = useState({ x: 0, y: 0 });
 
+  // Lock body scroll when mobile menu is open
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => {
+      document.body.style.overflow = "";
+    };
+  }, [mobileMenuOpen]);
+
   // Backend Submission Handler Pipeline
   const handleSubmit = async () => {
     if (!formData.name || !formData.contact) {
@@ -230,6 +238,19 @@ export default function FocalLengthMedia() {
     }
   };
 
+  const goToAbout = () => {
+    setMobileMenuOpen(false);
+    window.location.href = "/about";
+  };
+
+  const handleNavClick = (l) => {
+    if (l === "About") {
+      goToAbout();
+    } else {
+      scrollToSection(l);
+    }
+  };
+
   const parallax = scrollY * 0.35;
   const dynamicImageScale = Math.max(0.85, 1 - scrollY * 0.0008);
 
@@ -237,6 +258,12 @@ export default function FocalLengthMedia() {
     <>
       {/* GLOBAL HIGH-END STYLESHEET EXTRAPOLATION INTO NEXT-GEN CORE GRAPHICS */}
       <style>{`
+        *{box-sizing:border-box;}
+        html, body {
+          overflow-x: hidden;
+          max-width: 100vw;
+        }
+
         .service-card {
           position: relative;
           background: rgba(255, 255, 255, 0.01);
@@ -365,9 +392,23 @@ export default function FocalLengthMedia() {
         .nav-link {
           transition: color 0.3s;
           color: rgba(255,255,255,0.5);
+          position: relative;
+        }
+        .nav-link::after {
+          content: '';
+          position: absolute;
+          left: 0;
+          bottom: -8px;
+          width: 0%;
+          height: 1px;
+          background: #d4af37;
+          transition: width 0.3s ease;
         }
         .nav-link:hover {
           color: #d4af37;
+        }
+        .nav-link:hover::after {
+          width: 100%;
         }
         .btn-red {
           background: linear-gradient(135deg, #bd2c2c 0%, #911b1b 100%);
@@ -488,6 +529,184 @@ export default function FocalLengthMedia() {
           overflow: hidden;
           background: radial-gradient(circle at 50% 50%, #080d14 0%, #030406 100%);
         }
+
+        /* Classic ornamental divider used between major sections */
+        .ornament-divider {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          gap: 18px;
+          padding: 0;
+        }
+        .ornament-divider .line {
+          height: 1px;
+          width: 64px;
+          background: linear-gradient(90deg, transparent, rgba(212,175,55,0.4));
+        }
+        .ornament-divider .line.right {
+          background: linear-gradient(90deg, rgba(212,175,55,0.4), transparent);
+        }
+        .ornament-divider .mark {
+          width: 6px;
+          height: 6px;
+          border-radius: 50%;
+          background: #d4af37;
+          box-shadow: 0 0 10px rgba(212,175,55,0.5);
+        }
+
+        /* ============ MOBILE NAV ============ */
+        .mobile-menu-trigger {
+          display: none;
+        }
+        .mobile-menu-panel {
+          position: fixed;
+          top: 0;
+          right: 0;
+          height: 100vh;
+          width: min(78vw, 320px);
+          background: #05070a;
+          border-left: 1px solid rgba(255,255,255,0.06);
+          z-index: 1500;
+          transform: translateX(100%);
+          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+          display: flex;
+          flex-direction: column;
+          padding: 110px 36px 40px;
+          gap: 30px;
+        }
+        .mobile-menu-panel.is-open {
+          transform: translateX(0);
+        }
+        .mobile-menu-overlay {
+          position: fixed;
+          inset: 0;
+          background: rgba(0,0,0,0.65);
+          backdrop-filter: blur(4px);
+          z-index: 1400;
+          opacity: 0;
+          pointer-events: none;
+          transition: opacity 0.3s ease;
+        }
+        .mobile-menu-overlay.is-open {
+          opacity: 1;
+          pointer-events: auto;
+        }
+        .mobile-nav-link {
+          font-family: 'Montserrat', sans-serif;
+          font-size: 1.05rem;
+          font-weight: 600;
+          letter-spacing: 2px;
+          text-transform: uppercase;
+          color: rgba(255,255,255,0.75);
+          cursor: pointer;
+          padding-bottom: 18px;
+          border-bottom: 1px solid rgba(255,255,255,0.05);
+          transition: color 0.2s;
+        }
+        .mobile-nav-link:active,
+        .mobile-nav-link:hover {
+          color: #d4af37;
+        }
+        .mobile-menu-close {
+          position: absolute;
+          top: 28px;
+          right: 28px;
+          background: none;
+          border: none;
+          color: rgba(255,255,255,0.4);
+          font-size: 1.6rem;
+          cursor: pointer;
+          line-height: 1;
+          padding: 6px;
+        }
+
+        @media (max-width: 860px) {
+          .nav-links-desktop {
+            display: none !important;
+          }
+          .mobile-menu-trigger {
+            display: flex !important;
+            flex-direction: column;
+            justify-content: center;
+            gap: 5px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 10px;
+            z-index: 1001;
+          }
+          .hamburger-line {
+            width: 22px;
+            height: 2px;
+            background: #fff;
+            display: block;
+            transition: all 0.3s ease;
+            border-radius: 1px;
+          }
+          .mobile-menu-trigger.is-open .hamburger-line:first-child {
+            transform: translateY(3.5px) rotate(45deg);
+          }
+          .mobile-menu-trigger.is-open .hamburger-line:last-child {
+            transform: translateY(-3.5px) rotate(-45deg);
+          }
+        }
+
+        /* ============ TABLET ============ */
+        @media (max-width: 1024px) {
+          .hero-viewport-section {
+            padding: 110px 6% 60px !important;
+          }
+        }
+
+        /* ============ MOBILE ============ */
+        @media (max-width: 640px) {
+          .hero-viewport-section {
+            padding: 100px 5% 50px !important;
+            min-height: 92vh !important;
+          }
+          .premium-hero-logo {
+            height: 120px !important;
+            width: 120px !important;
+          }
+          .cyber-status-tag {
+            font-size: 0.52rem !important;
+            padding: 6px 14px !important;
+            margin-bottom: 22px !important;
+            text-align: center;
+          }
+          .btn-red, .btn-outline {
+            padding: 16px 28px !important;
+            font-size: 0.78rem !important;
+            width: 100%;
+            text-align: center;
+          }
+          .service-card {
+            padding: 34px 24px !important;
+          }
+          .contact-input {
+            padding: 16px 18px !important;
+            font-size: 0.9rem !important;
+          }
+          .custom-dropdown-trigger {
+            padding: 16px 18px !important;
+          }
+          .ornament-divider .line {
+            width: 36px;
+          }
+        }
+
+        @media (max-width: 400px) {
+          .hero-viewport-section h1 {
+            font-size: clamp(2.4rem, 11vw, 3.2rem) !important;
+          }
+        }
+
+        @media (max-width: 768px) {
+          section[id="contact"] > div:last-child,
+          section[id="about"] > div {
+            gap: 50px !important;
+          }
+        }
       `}</style>
 
       {/* ENTERPRISE LOGO ASSET PRELOADER */}
@@ -588,48 +807,60 @@ export default function FocalLengthMedia() {
         </div>
 
         {/* Desktop Menu Links */}
-    {/* Desktop Menu Links */}
-<div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
-  {["Services", "About", "Faq", "Contact"].map((l) => (
-    <span
-      key={l}
-      className="nav-link"
-      onClick={() => {
-        if (l === "About") {
-          window.location.href = "/about";
-        } else {
-          scrollToSection(l);
-        }
-      }}
-      style={{
-        cursor: "pointer",
-        fontFamily: "'Montserrat', sans-serif",
-        fontSize: "0.8rem",
-        fontWeight: 600,
-        letterSpacing: "2px",
-        textTransform: "uppercase",
-      }}
-    >
-      {l}
-    </span>
-  ))}
-</div>
+        <div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
+          {["Services", "About", "Faq", "Contact"].map((l) => (
+            <span
+              key={l}
+              className="nav-link"
+              onClick={() => handleNavClick(l)}
+              style={{
+                cursor: "pointer",
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: "0.8rem",
+                fontWeight: 600,
+                letterSpacing: "2px",
+                textTransform: "uppercase",
+              }}
+            >
+              {l}
+            </span>
+          ))}
+        </div>
 
         {/* Hamburger Trigger */}
         <button
           className={`mobile-menu-trigger ${mobileMenuOpen ? "is-open" : ""}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-          style={{
-            background: "none",
-            border: "none",
-            cursor: "pointer",
-            display: "none",
-          }} // Handled via responsive class in main index.css
+          aria-label="Toggle menu"
         >
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </button>
       </nav>
+
+      {/* Mobile menu overlay + sliding panel */}
+      <div
+        className={`mobile-menu-overlay ${mobileMenuOpen ? "is-open" : ""}`}
+        onClick={() => setMobileMenuOpen(false)}
+      />
+      <div className={`mobile-menu-panel ${mobileMenuOpen ? "is-open" : ""}`}>
+        <button
+          className="mobile-menu-close"
+          onClick={() => setMobileMenuOpen(false)}
+          aria-label="Close menu"
+        >
+          ✕
+        </button>
+        {["Services", "About", "Faq", "Contact"].map((l) => (
+          <span
+            key={l}
+            className="mobile-nav-link"
+            onClick={() => handleNavClick(l)}
+          >
+            {l}
+          </span>
+        ))}
+      </div>
 
       {/* VIEWPORT GRAPHIC CONTENT HUB */}
       <div
@@ -910,6 +1141,13 @@ export default function FocalLengthMedia() {
           </div>
         </section>
 
+        {/* classic ornamental divider */}
+        <div className="ornament-divider">
+          <span className="line" />
+          <span className="mark" />
+          <span className="line right" />
+        </div>
+
         {/* CORE NARRATIVE FIELD */}
         <section
           id="about"
@@ -981,6 +1219,26 @@ export default function FocalLengthMedia() {
                 engineered for impact. From the studio floor to the main stage,
                 we deliver excellence at every focal point.
               </p>
+              <a
+                href="/about"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 10,
+                  marginTop: 32,
+                  color: "#d4af37",
+                  fontFamily: "'Montserrat', sans-serif",
+                  fontSize: "0.78rem",
+                  fontWeight: 700,
+                  letterSpacing: "2px",
+                  textTransform: "uppercase",
+                  textDecoration: "none",
+                  borderBottom: "1px solid rgba(212,175,55,0.3)",
+                  paddingBottom: 4,
+                }}
+              >
+                Read Full Company Profile →
+              </a>
             </div>
             <div
               style={{
@@ -1476,6 +1734,19 @@ export default function FocalLengthMedia() {
               Your One-Stop Production Place
             </span>
           </div>
+          <a
+            href="/about"
+            style={{
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: "0.7rem",
+              fontWeight: 600,
+              color: "rgba(255,255,255,0.3)",
+              letterSpacing: 2,
+              textDecoration: "none",
+            }}
+          >
+            Company Profile
+          </a>
           <div
             style={{
               fontFamily: "'Montserrat', sans-serif",
