@@ -115,8 +115,7 @@ export default function AboutPage() {
   const [activeFaq, setActiveFaq] = useState(null);
 
   useEffect(() => {
-    const t = setTimeout(() => setLoaded(true), 100);
-    return () => clearTimeout(t);
+    setLoaded(true);
   }, []);
 
   useEffect(() => {
@@ -140,7 +139,7 @@ export default function AboutPage() {
   }, []);
 
   const handleCardMouseMove = (e) => {
-    if (window.matchMedia("(max-width: 1024px)").matches) return;
+    if (!window.matchMedia("(hover: hover)").matches) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -226,35 +225,43 @@ export default function AboutPage() {
         @keyframes premiumTextShine { 0% { background-position: 200% center; } 100% { background-position: 0% center; } }
 
         .eyebrow {
-          font-family: 'Montserrat', sans-serif; font-size: 0.68rem; font-weight: 800; letter-spacing: 7px;
+          font-family: 'Montserrat', sans-serif; font-size: clamp(0.6rem, 1.5vw, 0.68rem); font-weight: 800; letter-spacing: clamp(3px, 1vw, 7px);
           color: #cda44e; text-transform: uppercase; display: flex; align-items: center; gap: 14px;
         }
-        .eyebrow .tick { width: 35px; height: 1px; background: linear-gradient(90deg, transparent, rgba(205,164,78,0.5)); }
+        .eyebrow .tick { width: clamp(15px, 3vw, 35px); height: 1px; background: linear-gradient(90deg, transparent, rgba(205,164,78,0.5)); }
 
         /* Card Framework Architecture */
         .laser-shimmer { position: absolute; inset: 0; mix-blend-mode: screen; pointer-events: none; z-index: 4; transition: background 0.15s ease; border-radius: inherit; }
 
         .pillar-card {
           position: relative; background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.03);
-          border-radius: 12px; padding: 40px 30px; transition: border-color 0.6s ease, box-shadow 0.6s ease;
+          border-radius: 12px; padding: clamp(24px, 4vw, 40px) clamp(20px, 3vw, 30px); transition: border-color 0.6s ease, box-shadow 0.6s ease;
           transform-style: preserve-3d;
         }
-        .pillar-card:hover { border-color: rgba(205,164,78,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        @media (hover: hover) {
+          .pillar-card:hover { border-color: rgba(205,164,78,0.25); box-shadow: 0 30px 60px rgba(0,0,0,0.6); }
+        }
 
         .svc-card {
           background: rgba(255,255,255,0.005); border-left: 2px solid rgba(205,164,78,0.1);
           padding: 14px 18px; transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
         }
-        .svc-card:hover { background: rgba(205,164,78,0.03); border-left-color: #cda44e; transform: translateX(4px); }
+        @media (hover: hover) {
+          .svc-card:hover { background: rgba(205,164,78,0.03); border-left-color: #cda44e; transform: translateX(4px); }
+        }
 
         .team-card {
           background: rgba(255,255,255,0.008); border: 1px solid rgba(255,255,255,0.02);
           border-radius: 16px; overflow: hidden; transform-style: preserve-3d; transition: border-color 0.5s ease;
         }
-        .team-card:hover { border-color: rgba(205,164,78,0.2); }
+        @media (hover: hover) {
+          .team-card:hover { border-color: rgba(205,164,78,0.2); }
+        }
         .team-photo-wrap { position: relative; width: 100%; aspect-ratio: 4/4.5; overflow: hidden; background: #07090e; }
         .team-photo-wrap img { width: 100%; height: 100%; object-fit: cover; filter: grayscale(20%) brightness(0.9); transition: transform 0.8s ease; }
-        .team-card:hover .team-photo-wrap img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
+        @media (hover: hover) {
+          .team-card:hover .team-photo-wrap img { transform: scale(1.05); filter: grayscale(0%) brightness(1); }
+        }
 
         /* Fluid Studio Showcase Section */
         .showcase-container {
@@ -265,10 +272,10 @@ export default function AboutPage() {
 
         /* Responsive Adaptive Layout Utilities */
         .responsive-grid {
-          display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 290px), 1fr)); gap: 24px;
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 260px), 1fr)); gap: 24px;
         }
         .service-layout-grid {
-          display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 380px), 1fr)); gap: 32px;
+          display: grid; grid-template-columns: repeat(auto-fit, minmax(min(100%, 340px), 1fr)); gap: 32px;
         }
 
         @media (max-width: 1024px) {
@@ -276,7 +283,6 @@ export default function AboutPage() {
           .pillar-card, .team-card { transform: none !important; }
         }
         @media (max-width: 640px) {
-          .eyebrow { letter-spacing: 4px; }
           .svc-card { padding: 10px 14px; }
         }
       `}</style>
@@ -289,45 +295,45 @@ export default function AboutPage() {
       <div style={{ position: "fixed", top: 0, left: 0, height: 2, width: `${scrollProgress}%`, background: "#cda44e", zIndex: 9999 }} />
 
       {/* ===== STRUCTURAL HEADER ===== */}
-      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "clamp(16px, 3vw, 24px) 5%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(3,4,6,0.85)", backdropFilter: "blur(30px)", borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
+      <nav style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "clamp(12px, 2vw, 24px) 5%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(3,4,6,0.85)", backdropFilter: "blur(30px)", borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 12, textDecoration: "none" }}>
-          <img src={LOGO_URL} alt="FLM" style={{ height: 36, width: 36, borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }} />
-          <span style={{ color: "#fff", fontSize: "0.8rem", fontWeight: 800, letterSpacing: 6 }}>FOCAL LENGTH</span>
+          <img src={LOGO_URL} alt="FLM" style={{ height: 32, width: 32, borderRadius: 8, border: "1px solid rgba(255,255,255,0.1)" }} />
+          <span style={{ color: "#fff", fontSize: "0.75rem", fontWeight: 800, letterSpacing: 4 }}>FOCAL LENGTH</span>
         </a>
-        <a href="/" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.68rem", fontWeight: 700, letterSpacing: 3, textTransform: "uppercase", textDecoration: "none" }}>← Back</a>
+        <a href="/" style={{ color: "rgba(255,255,255,0.4)", fontSize: "0.65rem", fontWeight: 700, letterSpacing: 2, textTransform: "uppercase", textDecoration: "none" }}>← Back</a>
       </nav>
 
       {/* ===== CINEMATIC HERO ===== */}
-      <section style={{ minHeight: "60vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "160px 5% 80px", position: "relative", background: "radial-gradient(circle at 50% 50%, #0d121c 0%, #030406 100%)" }}>
+      <section style={{ minHeight: "55vh", display: "flex", flexDirection: "column", justifyContent: "center", alignItems: "center", textAlign: "center", padding: "140px 5% 60px", position: "relative", background: "radial-gradient(circle at 50% 50%, #0d121c 0%, #030406 100%)" }}>
         <div className={`fu ${loaded ? "show" : ""}`} style={{ maxWidth: 900 }}>
-          <div className="eyebrow" style={{ justifyContent: "center", marginBottom: 20 }}><span className="tick" />Corporate Profile<span className="tick" /></div>
-          <h1 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(3rem, 9vw, 6.5rem)", letterSpacing: "0.06em", lineHeight: 1, margin: 0, fontWeight: 400 }}>
+          <div className="eyebrow" style={{ justifyContent: "center", marginBottom: 16 }}><span className="tick" />Corporate Profile<span className="tick" /></div>
+          <h1 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.8rem, 8vw, 6.5rem)", letterSpacing: "0.05em", lineHeight: 1, margin: 0, fontWeight: 400 }}>
             INSIDE THE FRAME
           </h1>
-          <p className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.1rem, 2.2vw, 1.4rem)", color: "rgba(255,255,255,0.5)", marginTop: 20, lineHeight: 1.6 }}>
+          <p className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1rem, 2vw, 1.4rem)", color: "rgba(255,255,255,0.5)", marginTop: 16, lineHeight: 1.6 }}>
             RC: 9528632 &nbsp;·&nbsp; Structural Directives & Visual Ecosystem
           </p>
         </div>
       </section>
 
       {/* ===== EXECUTIVE NARRATIVE ===== */}
-      <section className={`fu d1 ${loaded ? "show" : ""}`} style={{ padding: "60px 5%", maxWidth: 1140, margin: "0 auto" }}>
-        <div className="eyebrow" style={{ marginBottom: 20 }}><span className="tick" />THE STUDIO OVERVIEW</div>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 480px), 1fr))", gap: "40px 60px", alignItems: "start" }}>
-          <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.8rem, 3.5vw, 2.6rem)", fontWeight: 400, lineHeight: 1.3, color: "#f4f1e9" }}>
+      <section className={`fu d1 ${loaded ? "show" : ""}`} style={{ padding: "40px 5%", maxWidth: 1140, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 16 }}><span className="tick" />THE STUDIO OVERVIEW</div>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 400px), 1fr))", gap: "32px 60px", alignItems: "start" }}>
+          <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.5rem, 3.2vw, 2.6rem)", fontWeight: 400, lineHeight: 1.3, color: "#f4f1e9" }}>
             A precision-driven creative production firm turning complex concepts into <span className="gold">legendary visual assets</span>.
           </h2>
           <div>
-            <p style={{ fontSize: "0.98rem", lineHeight: 1.9, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 30 }}>
+            <p style={{ fontSize: "0.95rem", lineHeight: 1.8, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 24 }}>
               At Focal Length Media, we map vision directly to premium execution. We eliminate the noise between abstract strategy and screen-ready clarity. Catering to blue-chip corporate entities, global NGOs, creative agencies, and dynamic artists, our facility coordinates end-to-end media operations with standard-setting technical rigor.
             </p>
-            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: 20, borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 24 }}>
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(140px, 1fr))", gap: 20, borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 20 }}>
               <div>
-                <span style={{ display: "block", fontSize: "0.62rem", color: "#cda44e", fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>HQ BASE</span>
+                <span style={{ display: "block", fontSize: "0.6rem", color: "#cda44e", fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>HQ BASE</span>
                 <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.7)" }}>Ikeja, Lagos, Nigeria</span>
               </div>
               <div>
-                <span style={{ display: "block", fontSize: "0.62rem", color: "#cda44e", fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>SECURE LINE</span>
+                <span style={{ display: "block", fontSize: "0.6rem", color: "#cda44e", fontWeight: 800, letterSpacing: 2, marginBottom: 4 }}>SECURE LINE</span>
                 <span style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.7)" }}>0706 734 9942</span>
               </div>
             </div>
@@ -335,55 +341,55 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ===== NEW INTERACTIVE MEDIA SHOWCASE LAYOUT ===== */}
-      <section style={{ padding: "60px 5%", maxWidth: 1240, margin: "0 auto" }}>
+      {/* ===== INTERACTIVE MEDIA SHOWCASE LAYOUT ===== */}
+      <section style={{ padding: "40px 5%", maxWidth: 1240, margin: "0 auto" }}>
         <div className="showcase-container">
           <img src={STUDIO_SHOWCASE_IMG} className="showcase-img" alt="Focal Length Media Studio Facility Showcase Layout" />
-          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(3,4,6,0.9) 0%, rgba(3,4,6,0.3) 50%, transparent 100%)", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "clamp(20px, 4vw, 40px)" }}>
+          <div style={{ position: "absolute", inset: 0, background: "linear-gradient(to top, rgba(3,4,6,0.95) 0%, rgba(3,4,6,0.3) 60%, transparent 100%)", display: "flex", flexDirection: "column", justifyContent: "flex-end", padding: "clamp(16px, 4vw, 40px)" }}>
             <div style={{ maxWidth: 600 }}>
-              <span style={{ color: "#cda44e", fontSize: "0.65rem", fontWeight: 800, letterSpacing: 4, textTransform: "uppercase", display: "block", marginBottom: 8 }}>Operational Environment Blueprint</span>
-              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.5rem, 4vw, 2.5rem)", fontWeight: 400, color: "#fff", letterSpacing: "0.05em", marginBottom: 12 }}>HIGH-FIDELITY FACILITY LAYOUT</h3>
-              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.6 }}>From synchronized virtual production environments and multi-cam master control tracking grids to spatial sound design clusters, our physical infrastructure is purpose-engineered for zero-latency workflows.</p>
+              <span style={{ color: "#cda44e", fontSize: "0.62rem", fontWeight: 800, letterSpacing: 3, textTransform: "uppercase", display: "block", marginBottom: 6 }}>Operational Environment Blueprint</span>
+              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(1.3rem, 3.5vw, 2.5rem)", fontWeight: 400, color: "#fff", letterSpacing: "0.04em", marginBottom: 8 }}>HIGH-FIDELITY FACILITY LAYOUT</h3>
+              <p style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.5)", lineHeight: 1.5 }}>From synchronized virtual production environments and multi-cam master control tracking grids to spatial sound design clusters, our physical infrastructure is purpose-engineered for zero-latency workflows.</p>
             </div>
           </div>
         </div>
       </section>
 
       {/* ===== THE 4 PILLARS ===== */}
-      <section style={{ padding: "60px 5%", maxWidth: 1240, margin: "0 auto" }}>
+      <section style={{ padding: "40px 5%", maxWidth: 1240, margin: "0 auto" }}>
         <div className="responsive-grid">
           {pillars.map((p) => (
             <div key={p.title} className="pillar-card" onMouseMove={handleCardMouseMove} onMouseLeave={handleCardMouseLeave}>
               <div className="laser-shimmer" />
-              <div style={{ fontSize: "0.8rem", color: "rgba(205,164,78,0.4)", fontStyle: "italic", marginBottom: 16 }} className="serif">{p.num}</div>
-              <div style={{ fontSize: "1.8rem", marginBottom: 16 }}>{p.icon}</div>
-              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.3rem", letterSpacing: "0.06em", margin: "0 0 10px", color: "#f4f1e9", fontWeight: 400 }}>{p.title}</h3>
-              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.7, margin: 0, fontWeight: 300 }}>{p.desc}</p>
+              <div style={{ fontSize: "0.8rem", color: "rgba(205,164,78,0.4)", fontStyle: "italic", marginBottom: 12 }} className="serif">{p.num}</div>
+              <div style={{ fontSize: "1.6rem", marginBottom: 12 }}>{p.icon}</div>
+              <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.25rem", letterSpacing: "0.05em", margin: "0 0 8px", color: "#f4f1e9", fontWeight: 400 }}>{p.title}</h3>
+              <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, margin: 0, fontWeight: 300 }}>{p.desc}</p>
             </div>
           ))}
         </div>
       </section>
 
       {/* ===== SERVICES MATRIX ===== */}
-      <section style={{ background: "#05070a", padding: "100px 5%", borderTop: "1px solid rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
+      <section style={{ background: "#05070a", padding: "80px 5%", borderTop: "1px solid rgba(255,255,255,0.02)", borderBottom: "1px solid rgba(255,255,255,0.02)" }}>
         <div style={{ maxWidth: 1240, margin: "0 auto" }}>
-          <div style={{ textCombine: "center", marginBottom: 60 }}>
+          <div style={{ marginBottom: 44 }}>
             <div className="eyebrow" style={{ justifyContent: "center" }}><span className="tick" />CAPABILITIES PROFILE<span className="tick" /></div>
-            <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", letterSpacing: "0.06em", margin: "16px 0 0", textAlign: "center", fontWeight: 400 }}>
+            <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 4.5vw, 4rem)", letterSpacing: "0.05em", margin: "12px 0 0", textAlign: "center", fontWeight: 400 }}>
               PRODUCTION ARCHITECTURE
             </h2>
           </div>
 
           <div className="service-layout-grid">
             {serviceGroups.map((g) => (
-              <div key={g.title} style={{ background: "rgba(255,255,255,0.003)", border: "1px solid rgba(255,255,255,0.015)", padding: "30px 24px", borderRadius: 12 }}>
-                <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.15rem", letterSpacing: "0.1em", color: "#cda44e", marginBottom: 20, borderBottom: "1px solid rgba(205,164,78,0.1)", paddingBottom: 12, fontWeight: 400 }}>
+              <div key={g.title} style={{ background: "rgba(255,255,255,0.003)", border: "1px solid rgba(255,255,255,0.015)", padding: "24px 20px", borderRadius: 12 }}>
+                <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.1rem", letterSpacing: "0.08em", color: "#cda44e", marginBottom: 16, borderBottom: "1px solid rgba(205,164,78,0.1)", paddingBottom: 10, fontWeight: 400 }}>
                   {g.title.toUpperCase()}
                 </h3>
                 <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                   {g.items.map(([t, d]) => (
                     <div key={t} className="svc-card">
-                      <div style={{ fontSize: "0.88rem", fontWeight: 600, color: "#f4f1e9", marginBottom: 4 }}>{t}</div>
+                      <div style={{ fontSize: "0.85rem", fontWeight: 600, color: "#f4f1e9", marginBottom: 4 }}>{t}</div>
                       <div style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.38)", fontWeight: 300, lineHeight: 1.4 }}>{d}</div>
                     </div>
                   ))}
@@ -394,20 +400,20 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ===== NEW COMPONENT: EQUIPMENT & GEAR MATRIX ===== */}
-      <section style={{ padding: "80px 5%", maxWidth: 1240, margin: "0 auto" }}>
-        <div className="eyebrow" style={{ marginBottom: 20 }}><span className="tick" />Technical Pipeline</div>
-        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 400, marginBottom: 40 }}>
+      {/* ===== EQUIPMENT & GEAR MATRIX ===== */}
+      <section style={{ padding: "60px 5%", maxWidth: 1240, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 16 }}><span className="tick" />Technical Pipeline</div>
+        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)", fontWeight: 400, marginBottom: 32 }}>
           High-Fidelity Hardware Ecosystem
         </h2>
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 320px), 1fr))", gap: 30 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 280px), 1fr))", gap: 24 }}>
           {techStack.map((stack) => (
-            <div key={stack.cat} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.015), transparent)", padding: 30, borderRadius: 12, border: "1px solid rgba(255,255,255,0.02)" }}>
-              <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.1rem", letterSpacing: "0.08em", color: "#f4f1e9", marginBottom: 16, fontWeight: 400 }}>{stack.cat.toUpperCase()}</h4>
-              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 12 }}>
+            <div key={stack.cat} style={{ background: "linear-gradient(180deg, rgba(255,255,255,0.015), transparent)", padding: 24, borderRadius: 12, border: "1px solid rgba(255,255,255,0.02)" }}>
+              <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.05rem", letterSpacing: "0.06em", color: "#f4f1e9", marginBottom: 14, fontWeight: 400 }}>{stack.cat.toUpperCase()}</h4>
+              <ul style={{ listStyle: "none", display: "flex", flexDirection: "column", gap: 10 }}>
                 {stack.items.map((item) => (
-                  <li key={item} style={{ fontSize: "0.82rem", color: "rgba(255,255,255,0.45)", display: "flex", alignItems: "center", gap: 10 }}>
-                    <span style={{ width: 4, height: 4, background: "#cda44e", borderRadius: "50%" }} /> {item}
+                  <li key={item} style={{ fontSize: "0.8rem", color: "rgba(255,255,255,0.45)", display: "flex", alignItems: "center", gap: 10, lineHeight: 1.4 }}>
+                    <span style={{ width: 4, height: 4, background: "#cda44e", borderRadius: "50%", flexShrink: 0 }} /> {item}
                   </li>
                 ))}
               </ul>
@@ -417,16 +423,16 @@ export default function AboutPage() {
       </section>
 
       {/* ===== VALUES & ETHICS ===== */}
-      <section style={{ padding: "80px 5%", maxWidth: 900, margin: "0 auto" }}>
-        <div className="eyebrow" style={{ marginBottom: 20 }}><span className="tick" />FOUNDATIONAL SYSTEM</div>
-        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 400, marginBottom: 40 }}>Core Anchors</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      <section style={{ padding: "60px 5%", maxWidth: 900, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 16 }}><span className="tick" />FOUNDATIONAL SYSTEM</div>
+        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)", fontWeight: 400, marginBottom: 32 }}>Core Anchors</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 20 }}>
           {values.map((v) => (
-            <div key={v.num} className="value-row" style={{ display: "flex", gap: "24px", alignItems: "flex-start" }}>
-              <div className="value-num" style={{ fontSize: "2rem", minWidth: "40px" }}>{v.num}</div>
+            <div key={v.num} style={{ display: "flex", gap: "20px", alignItems: "flex-start" }}>
+              <div style={{ fontSize: "1.8rem", minWidth: "35px", color: "#cda44e", fontFamily: "'Bebas Neue', sans-serif" }}>{v.num}</div>
               <div>
-                <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.2rem", letterSpacing: "0.08em", color: "#fff", marginBottom: 6, fontWeight: 400 }}>{v.title.toUpperCase()}</h4>
-                <p style={{ fontSize: "0.88rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.6, margin: 0, fontWeight: 300 }}>{v.desc}</p>
+                <h4 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.15rem", letterSpacing: "0.06em", color: "#fff", marginBottom: 4, fontWeight: 400 }}>{v.title.toUpperCase()}</h4>
+                <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.4)", lineHeight: 1.5, margin: 0, fontWeight: 300 }}>{v.desc}</p>
               </div>
             </div>
           ))}
@@ -434,50 +440,50 @@ export default function AboutPage() {
       </section>
 
       {/* ===== EXECUTION MANIFESTO ===== */}
-      <section style={{ background: "linear-gradient(180deg, #030406 0%, #0d0505 50%, #030406 100%)", padding: "100px 5%" }}>
+      <section style={{ background: "linear-gradient(180deg, #030406 0%, #0d0505 50%, #030406 100%)", padding: "80px 5%" }}>
         <div style={{ maxWidth: 800, margin: "0 auto" }}>
-          <div className="eyebrow" style={{ marginBottom: 20 }}><span className="tick" />CREATIVE CREED</div>
-          <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 400, marginBottom: 40, color: "#f4f1e9" }}>
+          <div className="eyebrow" style={{ marginBottom: 16 }}><span className="tick" />CREATIVE CREED</div>
+          <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)", fontWeight: 400, marginBottom: 32, color: "#f4f1e9" }}>
             Operational Maxims
           </h2>
           {manifesto.map((m, i) => (
-            <div key={m.ph} className="manifesto-line" style={{ padding: "24px 0" }}>
-              <div style={{ fontSize: "0.65rem", letterSpacing: 3, color: "#bd2c2c", fontWeight: 700, marginBottom: 6, textTransform: "uppercase" }}>0{i + 1} · {m.ph}</div>
-              <div className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.1rem, 2.5vw, 1.5rem)", color: "rgba(255,255,255,0.85)" }}>{m.en}</div>
+            <div key={m.ph} style={{ padding: "20px 0", borderBottom: i !== manifesto.length - 1 ? "1px solid rgba(255,255,255,0.02)" : "none" }}>
+              <div style={{ fontSize: "0.62rem", letterSpacing: 2, color: "#bd2c2c", fontWeight: 700, marginBottom: 6, textTransform: "uppercase" }}>0{i + 1} · {m.ph}</div>
+              <div className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1rem, 2.2vw, 1.4rem)", color: "rgba(255,255,255,0.85)", lineHeight: 1.4 }}>{m.en}</div>
             </div>
           ))}
         </div>
       </section>
 
       {/* ===== EXECUTIVE LEADERSHIP ===== */}
-      <section style={{ padding: "100px 5%", maxWidth: 1240, margin: "0 auto" }}>
-        <div style={{ textAlign: "center", marginBottom: 60 }}>
+      <section style={{ padding: "80px 5%", maxWidth: 1240, margin: "0 auto" }}>
+        <div style={{ textAlign: "center", marginBottom: 48 }}>
           <div className="eyebrow" style={{ justifyContent: "center" }}><span className="tick" />LEADERSHIP FLIGHT<span className="tick" /></div>
-          <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2.4rem, 5vw, 4rem)", letterSpacing: "0.06em", margin: "16px 0 0", fontWeight: 400 }}>
+          <h2 className="gold-grad" style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "clamp(2rem, 4.5vw, 4rem)", letterSpacing: "0.05em", margin: "12px 0 0", fontWeight: 400 }}>
             BOARD OF DIRECTORS
           </h2>
         </div>
 
-        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 460px), 1fr))", gap: 40 }}>
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(min(100%, 420px), 1fr))", gap: 32 }}>
           {team.map((m) => (
             <div key={m.name} className="team-card" onMouseMove={handleCardMouseMove} onMouseLeave={handleCardMouseLeave}>
               <div className="laser-shimmer" />
               <div className="team-photo-wrap">
                 <img src={m.img} alt={m.name} onError={(e) => { e.currentTarget.style.display = 'none'; }} />
-                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 50%, rgba(3,4,6,0.95) 100%)", zIndex: 2 }} />
-                <div style={{ position: "absolute", bottom: 24, left: 24, right: 24, zIndex: 3 }}>
-                  <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.6rem", letterSpacing: "0.05em", color: "#fff", fontWeight: 400 }}>{m.name}</h3>
-                  <div className="serif" style={{ fontStyle: "italic", fontSize: "0.85rem", color: "#cda44e", marginTop: 4 }}>
+                <div style={{ position: "absolute", inset: 0, background: "linear-gradient(180deg, transparent 40%, rgba(3,4,6,0.95) 100%)", zIndex: 2 }} />
+                <div style={{ position: "absolute", bottom: 20, left: 20, right: 20, zIndex: 3 }}>
+                  <h3 style={{ fontFamily: "'Bebas Neue', sans-serif", fontSize: "1.4rem", letterSpacing: "0.04em", color: "#fff", fontWeight: 400 }}>{m.name}</h3>
+                  <div className="serif" style={{ fontStyle: "italic", fontSize: "0.85rem", color: "#cda44e", marginTop: 2 }}>
                     "{m.alias}" &nbsp;·&nbsp; {m.role}
                   </div>
                 </div>
               </div>
-              <div style={{ padding: 30 }}>
-                <p style={{ fontSize: "0.88rem", lineHeight: 1.8, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 16 }}>{m.bio}</p>
-                <p style={{ fontSize: "0.88rem", lineHeight: 1.8, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 24 }}>{m.bio2}</p>
-                <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 20 }}>
+              <div style={{ padding: "24px 20px" }}>
+                <p style={{ fontSize: "0.88rem", lineHeight: 1.7, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 14 }}>{m.bio}</p>
+                <p style={{ fontSize: "0.88rem", lineHeight: 1.7, color: "rgba(255,255,255,0.45)", fontWeight: 300, marginBottom: 20 }}>{m.bio2}</p>
+                <div style={{ borderTop: "1px solid rgba(255,255,255,0.04)", paddingTop: 16 }}>
                   {m.credentials.map((c) => (
-                    <div key={c} style={{ fontSize: "0.78rem", color: "rgba(255,255,255,0.35)", marginBottom: 6 }}>— {c}</div>
+                    <div key={c} style={{ fontSize: "0.75rem", color: "rgba(255,255,255,0.35)", marginBottom: 4, lineHeight: 1.4 }}>— {c}</div>
                   ))}
                 </div>
               </div>
@@ -486,22 +492,22 @@ export default function AboutPage() {
         </div>
       </section>
 
-      {/* ===== NEW COMPONENT: FAQ PIPELINE ===== */}
-      <section style={{ padding: "60px 5%", maxWidth: 800, margin: "0 auto" }}>
-        <div className="eyebrow" style={{ marginBottom: 20 }}><span className="tick" />FAQ Matrix</div>
-        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.6rem, 3vw, 2.4rem)", fontWeight: 400, marginBottom: 40 }}>Engagement Logistics</h2>
-        <div style={{ display: "flex", flexDirection: "column", gap: 16 }}>
+      {/* ===== FAQ PIPELINE ===== */}
+      <section style={{ padding: "40px 5% 80px", maxWidth: 800, margin: "0 auto" }}>
+        <div className="eyebrow" style={{ marginBottom: 16 }}><span className="tick" />FAQ Matrix</div>
+        <h2 className="serif" style={{ fontStyle: "italic", fontSize: "clamp(1.4rem, 2.8vw, 2.4rem)", fontWeight: 400, marginBottom: 32 }}>Engagement Logistics</h2>
+        <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
           {faqPipeline.map((faq, idx) => (
             <div key={idx} style={{ border: "1px solid rgba(255,255,255,0.03)", borderRadius: 10, overflow: "hidden", background: "rgba(255,255,255,0.002)" }}>
               <button 
                 onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}
-                style={{ width: "100%", padding: "20px 24px", background: "transparent", border: "none", color: "#f4f1e9", textAlign: "left", fontSize: "0.92rem", fontWeight: 600, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center" }}
+                style={{ width: "100%", padding: "18px 20px", background: "transparent", border: "none", color: "#f4f1e9", textAlign: "left", fontSize: "0.9rem", fontWeight: 600, cursor: "pointer", display: "flex", justifyContent: "space-between", alignItems: "center", gap: 16 }}
               >
                 <span>{faq.q}</span>
-                <span style={{ color: "#cda44e", transition: "transform 0.3s", transform: activeFaq === idx ? "rotate(45deg)" : "rotate(0deg)" }}>+</span>
+                <span style={{ color: "#cda44e", transition: "transform 0.3s", transform: activeFaq === idx ? "rotate(45deg)" : "rotate(0deg)", flexShrink: 0 }}>+</span>
               </button>
-              <div style={{ max減Height: activeFaq === idx ? "300px" : "0px", height: "auto", overflow: "hidden", transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)", padding: activeFaq === idx ? "0 24px 20px" : "0 24px" }}>
-                <p style={{ fontSize: "0.85rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}>{faq.a}</p>
+              <div style={{ maxHeight: activeFaq === idx ? "200px" : "0px", overflow: "hidden", transition: "all 0.4s cubic-bezier(0.16, 1, 0.3, 1)" }}>
+                <p style={{ padding: "0 20px 18px", fontSize: "0.85rem", color: "rgba(255,255,255,0.45)", lineHeight: 1.6 }}>{faq.a}</p>
               </div>
             </div>
           ))}
@@ -509,11 +515,11 @@ export default function AboutPage() {
       </section>
 
       {/* ===== STRUCTURAL FOOTER ===== */}
-      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.02)", padding: "40px 5%", display: "flex", flexWrap: "wrap", gap: 24, alignItems: "center", justifyContent: "space-between", background: "#010204" }}>
-        <span style={{ fontSize: "0.68rem", letterSpacing: 4, color: "rgba(255,255,255,0.3)", textTransform: "uppercase" }}>
+      <footer style={{ borderTop: "1px solid rgba(255,255,255,0.02)", padding: "32px 5%", display: "flex", flexDirection: "row", flexWrap: "wrap", gap: 20, alignItems: "center", justifyContent: "space-between", background: "#010204" }}>
+        <span style={{ fontSize: "0.65rem", letterSpacing: 3, color: "rgba(255,255,255,0.3)", textTransform: "uppercase", lineHeight: 1.4 }}>
           FOCAL LENGTH MEDIA COMPANY PROFILE · RC 9528632
         </span>
-        <a href="/" style={{ color: "#cda44e", fontSize: "0.68rem", letterSpacing: 2, textTransform: "uppercase", textDecoration: "none" }}>Top ↑</a>
+        <a href="/" style={{ color: "#cda44e", fontSize: "0.65rem", letterSpacing: 2, textTransform: "uppercase", textDecoration: "none" }}>Top ↑</a>
       </footer>
     </div>
   );
