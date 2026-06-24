@@ -15,6 +15,12 @@ if (path === '/admin') {
       <React.StrictMode><mod.default /></React.StrictMode>
     );
   });
+} else if (path === '/portfolio') {
+  import('./PortfolioPage.jsx').then(mod => {
+    ReactDOM.createRoot(document.getElementById('root')).render(
+      <React.StrictMode><mod.default /></React.StrictMode>
+    );
+  });
 } else {
   import('./App.jsx').then(mod => {
     ReactDOM.createRoot(document.getElementById('root')).render(

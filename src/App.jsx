@@ -243,9 +243,16 @@ export default function FocalLengthMedia() {
     window.location.href = "/about";
   };
 
+  const goToPortfolio = () => {
+    setMobileMenuOpen(false);
+    window.location.href = "/portfolio";
+  };
+
   const handleNavClick = (l) => {
     if (l === "About") {
       goToAbout();
+    } else if (l === "Portfolio") {
+      goToPortfolio();
     } else {
       scrollToSection(l);
     }
@@ -808,7 +815,7 @@ export default function FocalLengthMedia() {
 
         {/* Desktop Menu Links */}
         <div className="nav-links-desktop" style={{ display: "flex", gap: 48 }}>
-          {["Services", "About", "Faq", "Contact"].map((l) => (
+          {["Services", "About", "Portfolio", "Faq", "Contact"].map((l) => (
             <span
               key={l}
               className="nav-link"
@@ -851,7 +858,7 @@ export default function FocalLengthMedia() {
         >
           ✕
         </button>
-        {["Services", "About", "Faq", "Contact"].map((l) => (
+        {["Services", "About", "Portfolio", "Faq", "Contact"].map((l) => (
           <span
             key={l}
             className="mobile-nav-link"
@@ -1219,26 +1226,46 @@ export default function FocalLengthMedia() {
                 engineered for impact. From the studio floor to the main stage,
                 we deliver excellence at every focal point.
               </p>
-              <a
-                href="/about"
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 10,
-                  marginTop: 32,
-                  color: "#d4af37",
-                  fontFamily: "'Montserrat', sans-serif",
-                  fontSize: "0.78rem",
-                  fontWeight: 700,
-                  letterSpacing: "2px",
-                  textTransform: "uppercase",
-                  textDecoration: "none",
-                  borderBottom: "1px solid rgba(212,175,55,0.3)",
-                  paddingBottom: 4,
-                }}
-              >
-                Read Full Company Profile →
-              </a>
+              <div style={{ display: "flex", gap: 28, flexWrap: "wrap", marginTop: 32 }}>
+                <a
+                  href="/about"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    color: "#d4af37",
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: "0.78rem",
+                    fontWeight: 700,
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                    textDecoration: "none",
+                    borderBottom: "1px solid rgba(212,175,55,0.3)",
+                    paddingBottom: 4,
+                  }}
+                >
+                  Read Full Company Profile →
+                </a>
+                <a
+                  href="/portfolio"
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: 10,
+                    color: "rgba(255,255,255,0.7)",
+                    fontFamily: "'Montserrat', sans-serif",
+                    fontSize: "0.78rem",
+                    fontWeight: 700,
+                    letterSpacing: "2px",
+                    textTransform: "uppercase",
+                    textDecoration: "none",
+                    borderBottom: "1px solid rgba(255,255,255,0.2)",
+                    paddingBottom: 4,
+                  }}
+                >
+                  View Our Portfolio →
+                </a>
+              </div>
             </div>
             <div
               style={{
@@ -1734,19 +1761,34 @@ export default function FocalLengthMedia() {
               Your One-Stop Production Place
             </span>
           </div>
-          <a
-            href="/about"
-            style={{
-              fontFamily: "'Montserrat', sans-serif",
-              fontSize: "0.7rem",
-              fontWeight: 600,
-              color: "rgba(255,255,255,0.3)",
-              letterSpacing: 2,
-              textDecoration: "none",
-            }}
-          >
-            Company Profile
-          </a>
+          <div style={{ display: "flex", gap: 24, flexWrap: "wrap" }}>
+            <a
+              href="/about"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                color: "rgba(255,255,255,0.3)",
+                letterSpacing: 2,
+                textDecoration: "none",
+              }}
+            >
+              Company Profile
+            </a>
+            <a
+              href="/portfolio"
+              style={{
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: "0.7rem",
+                fontWeight: 600,
+                color: "rgba(255,255,255,0.3)",
+                letterSpacing: 2,
+                textDecoration: "none",
+              }}
+            >
+              Portfolio
+            </a>
+          </div>
           <div
             style={{
               fontFamily: "'Montserrat', sans-serif",
