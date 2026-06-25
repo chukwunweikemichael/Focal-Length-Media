@@ -501,6 +501,7 @@ export default function FocalLengthMedia() {
           text-transform: uppercase;
           color: rgba(255,255,255,0.5);
           margin-bottom: 32px;
+          white-space: nowrap;
         }
         .pulse-dot {
           width: 6px;
@@ -509,6 +510,7 @@ export default function FocalLengthMedia() {
           border-radius: 50%;
           box-shadow: 0 0 10px #2ecc71;
           animation: pulseGlow 2s infinite alternate;
+          flex-shrink: 0;
         }
         @keyframes pulseGlow {
           0% { opacity: 0.4; }
@@ -564,13 +566,26 @@ export default function FocalLengthMedia() {
         /* ============ MOBILE NAV ============ */
         .mobile-menu-trigger {
           display: none;
+          width: 44px;
+          height: 44px;
+          align-items: center;
+          justify-content: center;
+          background: rgba(255,255,255,0.04);
+          border: 1px solid rgba(255,255,255,0.08);
+          border-radius: 8px;
+          cursor: pointer;
+          padding: 0;
+          z-index: 1600;
+          position: relative;
+          flex-shrink: 0;
         }
         .mobile-menu-panel {
           position: fixed;
           top: 0;
           right: 0;
           height: 100vh;
-          width: min(78vw, 320px);
+          height: 100dvh;
+          width: min(80vw, 320px);
           background: #05070a;
           border-left: 1px solid rgba(255,255,255,0.06);
           z-index: 1500;
@@ -578,8 +593,9 @@ export default function FocalLengthMedia() {
           transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
           flex-direction: column;
-          padding: 110px 36px 40px;
-          gap: 30px;
+          padding: 100px 32px 40px;
+          gap: 26px;
+          overflow-y: auto;
         }
         .mobile-menu-panel.is-open {
           transform: translateX(0);
@@ -600,13 +616,13 @@ export default function FocalLengthMedia() {
         }
         .mobile-nav-link {
           font-family: 'Montserrat', sans-serif;
-          font-size: 1.05rem;
+          font-size: 1rem;
           font-weight: 600;
           letter-spacing: 2px;
           text-transform: uppercase;
           color: rgba(255,255,255,0.75);
           cursor: pointer;
-          padding-bottom: 18px;
+          padding-bottom: 16px;
           border-bottom: 1px solid rgba(255,255,255,0.05);
           transition: color 0.2s;
         }
@@ -616,15 +632,42 @@ export default function FocalLengthMedia() {
         }
         .mobile-menu-close {
           position: absolute;
-          top: 28px;
-          right: 28px;
-          background: none;
-          border: none;
-          color: rgba(255,255,255,0.4);
-          font-size: 1.6rem;
+          top: 24px;
+          right: 24px;
+          width: 36px;
+          height: 36px;
+          background: rgba(255,255,255,0.05);
+          border: 1px solid rgba(255,255,255,0.1);
+          border-radius: 8px;
+          color: rgba(255,255,255,0.6);
+          font-size: 1.2rem;
           cursor: pointer;
           line-height: 1;
-          padding: 6px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+        }
+
+        .hamburger-line {
+          width: 20px;
+          height: 2px;
+          background: #fff;
+          display: block;
+          border-radius: 1px;
+          transition: transform 0.3s ease, opacity 0.3s ease;
+        }
+        .mobile-menu-trigger .hamburger-line + .hamburger-line {
+          margin-top: 5px;
+        }
+        .mobile-menu-trigger.is-open .hamburger-line:nth-child(1) {
+          transform: translateY(7px) rotate(45deg);
+        }
+        .mobile-menu-trigger.is-open .hamburger-line:nth-child(2) {
+          opacity: 0;
+        }
+        .mobile-menu-trigger.is-open .hamburger-line:nth-child(3) {
+          transform: translateY(-7px) rotate(-45deg);
         }
 
         @media (max-width: 860px) {
@@ -633,28 +676,16 @@ export default function FocalLengthMedia() {
           }
           .mobile-menu-trigger {
             display: flex !important;
-            flex-direction: column;
-            justify-content: center;
-            gap: 5px;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 10px;
-            z-index: 1001;
           }
-          .hamburger-line {
-            width: 22px;
-            height: 2px;
-            background: #fff;
-            display: block;
-            transition: all 0.3s ease;
-            border-radius: 1px;
+        }
+
+        @media (max-width: 380px) {
+          .mobile-menu-panel {
+            width: 86vw;
+            padding: 90px 24px 32px;
           }
-          .mobile-menu-trigger.is-open .hamburger-line:first-child {
-            transform: translateY(3.5px) rotate(45deg);
-          }
-          .mobile-menu-trigger.is-open .hamburger-line:last-child {
-            transform: translateY(-3.5px) rotate(-45deg);
+          .mobile-nav-link {
+            font-size: 0.92rem;
           }
         }
 
@@ -662,6 +693,13 @@ export default function FocalLengthMedia() {
         @media (max-width: 1024px) {
           .hero-viewport-section {
             padding: 110px 6% 60px !important;
+          }
+        }
+
+        /* ============ MEDIUM PHONES / SMALL TABLETS ============ */
+        @media (max-width: 700px) {
+          .hero-viewport-section h1 {
+            font-size: clamp(2.8rem, 9.5vw, 4.6rem) !important;
           }
         }
 
@@ -704,7 +742,10 @@ export default function FocalLengthMedia() {
 
         @media (max-width: 400px) {
           .hero-viewport-section h1 {
-            font-size: clamp(2.4rem, 11vw, 3.2rem) !important;
+            font-size: clamp(2.2rem, 11vw, 3rem) !important;
+          }
+          .cyber-status-tag span {
+            font-size: 0.5rem;
           }
         }
 
@@ -839,7 +880,10 @@ export default function FocalLengthMedia() {
           className={`mobile-menu-trigger ${mobileMenuOpen ? "is-open" : ""}`}
           onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
           aria-label="Toggle menu"
+          aria-expanded={mobileMenuOpen}
+          type="button"
         >
+          <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
           <span className="hamburger-line"></span>
         </button>
@@ -855,6 +899,7 @@ export default function FocalLengthMedia() {
           className="mobile-menu-close"
           onClick={() => setMobileMenuOpen(false)}
           aria-label="Close menu"
+          type="button"
         >
           ✕
         </button>
