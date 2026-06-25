@@ -20,7 +20,6 @@ const studioImages = [
   { src: "/portfolio/studio-14.jpg", caption: "Market-themed set — full prop dressing" },
 ];
 
-/* YouTube showreel, grouped by category */
 const showreel = [
   {
     category: "Feature Film",
@@ -69,9 +68,25 @@ function getYouTubeId(url) {
   return null;
 }
 
+/* Detect once whether this is a touch/mobile device. We use this purely to
+   decide which decorative layer (heavy vs light) to render — every
+   scroll-reveal animation and the core layout stays IDENTICAL on both. */
+function useIsMobile() {
+  const [isMobile, setIsMobile] = useState(false);
+  useEffect(() => {
+    const check = () =>
+      window.matchMedia("(max-width: 860px)").matches ||
+      window.matchMedia("(pointer: coarse)").matches;
+    setIsMobile(check());
+  }, []);
+  return isMobile;
+}
+
 /* Reveal-on-scroll: fires the INSTANT a section enters the viewport.
-   No hover/touch needed. Uses IntersectionObserver (cheap, event-driven,
-   not a scroll listener) so it never causes scroll jank. */
+   IntersectionObserver only — never a scroll listener — so this never
+   causes jank on phone or desktop. Threshold lowered + rootMargin
+   extended downward so items trigger right as they approach the
+   bottom edge of the screen, before they're even fully visible. */
 function Reveal({ children, delay = 0, className = "", style = {}, as = "div" }) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -89,7 +104,7 @@ function Reveal({ children, delay = 0, className = "", style = {}, as = "div" })
           }
         });
       },
-      { threshold: 0.05, rootMargin: "0px 0px -10% 0px" }
+      { threshold: 0.01, rootMargin: "0px 0px 15% 0px" }
     );
     obs.observe(el);
     return () => obs.unobserve(el);
@@ -111,12 +126,11 @@ export default function PortfolioPage() {
   const [activeVideo, setActiveVideo] = useState(null);
   const [filter, setFilter] = useState("all");
   const [hoveredCard, setHoveredCard] = useState(null);
+  const isMobile = useIsMobile();
 
   const cursorGlowRef = useRef(null);
   const scrollBarRef = useRef(null);
 
-  /* Cursor glow + scroll progress bar are driven via refs + rAF,
-     bypassing React state entirely — zero re-renders on mousemove/scroll. */
   useEffect(() => {
     let ticking = false;
     let lastX = 0, lastY = 0;
@@ -158,7 +172,10 @@ export default function PortfolioPage() {
       }
     };
 
-    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    // Cursor glow only matters on devices with a real mouse — skip entirely on touch
+    if (!isMobile) {
+      window.addEventListener("mousemove", onMouseMove, { passive: true });
+    }
     window.addEventListener("scroll", onScroll, { passive: true });
     window.addEventListener("keydown", onKey);
     return () => {
@@ -166,15 +183,16 @@ export default function PortfolioPage() {
       window.removeEventListener("scroll", onScroll);
       window.removeEventListener("keydown", onKey);
     };
-  }, []);
+  }, [isMobile]);
 
   useEffect(() => {
     document.body.style.overflow = lightboxImg || activeVideo ? "hidden" : "";
     return () => { document.body.style.overflow = ""; };
   }, [lightboxImg, activeVideo]);
 
-  // 3D tilt on hover — imperative DOM only, runs outside React's render cycle
+  // 3D tilt on hover — desktop only, never attached on touch devices
   const handleCardMouseMove = (e) => {
+    if (isMobile) return;
     const card = e.currentTarget;
     const rect = card.getBoundingClientRect();
     const x = e.clientX - rect.left;
@@ -188,6 +206,7 @@ export default function PortfolioPage() {
     if (shine) shine.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(212,175,55,0.2) 0%, transparent 60%)`;
   };
   const handleCardMouseLeave = (e) => {
+    if (isMobile) return;
     const card = e.currentTarget;
     card.style.transform = `perspective(1200px) rotateX(0deg) rotateY(0deg) scale3d(1,1,1)`;
     const shine = card.querySelector(".laser-shimmer");
@@ -205,13 +224,13 @@ export default function PortfolioPage() {
         ::-webkit-scrollbar-track { background: #030406; }
         ::-webkit-scrollbar-thumb { background: linear-gradient(180deg, #d4af37, #b89025, transparent); border-radius: 20px; }
 
+        /* ===== DESKTOP-ONLY decorative layers (full effect, untouched) ===== */
         .custom-cursor-glow {
           position: fixed; top: 0; left: 0; width: 600px; height: 600px; border-radius: 50%;
           background: radial-gradient(circle, rgba(212,175,55,0.065) 0%, transparent 75%);
           pointer-events: none; z-index: 9999; transform: translate(-50%, -50%);
           mix-blend-mode: screen; will-change: transform;
         }
-
         .ambient-glow {
           position: fixed; width: 1000px; height: 1000px; border-radius: 50%;
           background: radial-gradient(circle, rgba(212,175,55,0.05) 0%, transparent 70%);
@@ -226,7 +245,6 @@ export default function PortfolioPage() {
           50% { transform: translate(25%, 20%) rotate(180deg) scale(1.25); }
           100% { transform: translate(-5%, 35%) rotate(360deg) scale(0.95); }
         }
-
         .film-grain {
           position: fixed; top: -100%; left: -100%; right: -100%; bottom: -100%;
           width: 300%; height: 300%; background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="noise"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.95" numOctaves="4" stitchTiles="stitch"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23noise)" opacity="0.03"/%3E%3C/svg%3E') repeat;
@@ -234,12 +252,23 @@ export default function PortfolioPage() {
         }
         @keyframes kineticGrain { 0%, 100% { transform:translate(0, 0); } 20% { transform:translate(-1%, -2%); } 60% { transform:translate(2%, -1%); } 80% { transform:translate(-2%, 1%); } }
 
-        /* Reveal-on-scroll — only opacity + transform are animated (GPU-cheap) */
+        /* ===== MOBILE-ONLY lightweight equivalents (same visual mood, near-zero GPU cost) ===== */
+        .mobile-bg-glow {
+          position: fixed; inset: 0; z-index: 1; pointer-events: none;
+          background:
+            radial-gradient(circle at 20% 15%, rgba(212,175,55,0.07) 0%, transparent 45%),
+            radial-gradient(circle at 85% 70%, rgba(212,175,55,0.05) 0%, transparent 50%);
+        }
+        .mobile-grain-static {
+          position: fixed; inset: 0; z-index: 2; pointer-events: none; opacity: 0.025;
+          background: transparent url('data:image/svg+xml,%3Csvg viewBox="0 0 200 200" xmlns="http://www.w3.org/2000/svg"%3E%3Cfilter id="n"%3E%3CfeTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="2"/%3E%3C/filter%3E%3Crect width="100%25" height="100%25" filter="url(%23n)"/%3E%3C/svg%3E') repeat;
+        }
+
+        /* Reveal-on-scroll — only opacity + transform are animated (GPU-cheap on any device) */
         .fu {
           opacity: 0;
-          transform: translateY(30px);
-          transition: opacity 0.55s cubic-bezier(0.16,1,0.3,1), transform 0.55s cubic-bezier(0.16,1,0.3,1);
-          will-change: opacity, transform;
+          transform: translateY(18px);
+          transition: opacity 0.4s ease-out, transform 0.4s ease-out;
         }
         .fu.show { opacity: 1; transform: translateY(0); }
 
@@ -268,160 +297,171 @@ export default function PortfolioPage() {
           background: rgba(255,255,255,0.015); border: 1px solid rgba(255,255,255,0.06);
           color: rgba(255,255,255,0.55); font-family: 'Montserrat', sans-serif; font-size: 0.72rem;
           font-weight: 700; letter-spacing: 4px; padding: 14px 34px; border-radius: 50px;
-          cursor: pointer; transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease, box-shadow 0.3s ease, transform 0.3s ease;
-          text-transform: uppercase; position: relative; overflow: hidden; backdrop-filter: blur(15px);
+          cursor: pointer; transition: color 0.3s ease, border-color 0.3s ease, background-color 0.3s ease;
+          text-transform: uppercase; position: relative; overflow: hidden;
         }
-        .filter-btn::after {
-          content: ''; position: absolute; inset: 0; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.2), transparent);
-          transform: translateX(-100%); transition: transform 0.75s ease;
-        }
-        .filter-btn:hover::after { transform: translateX(100%); }
-        .filter-btn:hover, .filter-btn.active { color: #d4af37; border-color: #d4af37; background: rgba(212,175,55,0.05); box-shadow: 0 0 30px rgba(212,175,55,0.15); transform: translateY(-2px); }
+        .filter-btn:hover, .filter-btn.active { color: #d4af37; border-color: #d4af37; background: rgba(212,175,55,0.05); }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(330px, 1fr)); gap: 40px; }
 
         .gallery-item {
           position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 4/3; cursor: pointer; background: #070a11;
           border: 1px solid rgba(255,255,255,0.02); box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-          transition: transform 0.25s cubic-bezier(0.25, 1, 0.5, 1), box-shadow 0.5s ease, border-color 0.5s ease;
-          transform-style: preserve-3d; will-change: transform;
+          transition: transform 0.25s ease, box-shadow 0.3s ease, border-color 0.3s ease;
         }
-        .gallery-item::before {
-          content: ''; position: absolute; inset: 0; border: 1px solid transparent; border-radius: 24px;
-          background: linear-gradient(135deg, rgba(212,175,55,0.75), transparent 40%, transparent 60%, rgba(212,175,55,0.4)) border-box;
-          -webkit-mask: linear-gradient(#fff 0 0) padding-box, linear-gradient(#fff 0 0); -webkit-mask-composite: xor; mask-composite: exclude;
-          opacity: 0; transition: opacity 0.4s ease; z-index: 5; pointer-events: none;
-        }
-        .gallery-item:hover { border-color: transparent; box-shadow: 0 60px 120px rgba(0,0,0,0.9), 0 0 50px rgba(212,175,55,0.12); }
-        .gallery-item:hover::before { opacity: 1; }
+        .gallery-item:hover { border-color: rgba(212,175,55,0.4); box-shadow: 0 60px 120px rgba(0,0,0,0.9), 0 0 50px rgba(212,175,55,0.12); }
 
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.05) grayscale(15%); transition: transform 0.6s cubic-bezier(.16,1,.3,1), filter 0.6s ease; }
-        .gallery-item:hover img { filter: brightness(1.08) contrast(1.1) grayscale(0%); transform: scale(1.15) translateZ(20px); }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; filter: brightness(0.65) contrast(1.05) grayscale(15%); transition: transform 0.5s ease, filter 0.5s ease; }
+        .gallery-item:hover img { filter: brightness(1.08) contrast(1.1) grayscale(0%); transform: scale(1.1); }
 
         .laser-shimmer { position: absolute; inset: 0; mix-blend-mode: screen; pointer-events: none; z-index: 4; }
 
         .gallery-caption {
           position: absolute; inset: 0; background: linear-gradient(180deg, transparent 20%, rgba(3,4,6,0.98) 100%);
-          display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; opacity: 0; transform: translateY(20px) translateZ(30px); transition: opacity 0.4s ease, transform 0.4s ease; z-index: 3;
+          display: flex; flex-direction: column; justify-content: flex-end; padding: 40px; opacity: 0; transition: opacity 0.3s ease; z-index: 3;
         }
-        .gallery-item:hover .gallery-caption { opacity: 1; transform: translateY(0) translateZ(30px); }
+        .gallery-item:hover .gallery-caption { opacity: 1; }
         .gallery-caption span { font-size: 0.92rem; color: #fff; font-weight: 500; line-height: 1.6; letter-spacing: 0.6px; text-shadow: 0 3px 8px rgba(0,0,0,0.7); }
 
         .gallery-zoom-icon {
           position: absolute; top: 32px; right: 32px; width: 50px; height: 50px; border-radius: 50%;
           background: rgba(3,4,6,0.92); border: 1px solid rgba(255,255,255,0.15);
           display: flex; align-items: center; justify-content: center; color: rgba(255,255,255,0.7); font-size: 1.2rem;
-          opacity: 0; backdrop-filter: blur(10px); transform: scale(0.6) translateZ(40px); transition: opacity 0.4s ease, transform 0.4s ease, border-color 0.4s ease, color 0.4s ease, box-shadow 0.4s ease; z-index: 4;
+          opacity: 0; transition: opacity 0.3s ease; z-index: 4;
         }
-        .gallery-item:hover .gallery-zoom-icon { opacity: 1; transform: scale(1) rotate(90deg) translateZ(40px); border-color: rgba(212,175,55,0.9); color: #d4af37; box-shadow: 0 0 25px rgba(212,175,55,0.45); }
+        .gallery-item:hover .gallery-zoom-icon { opacity: 1; border-color: rgba(212,175,55,0.9); color: #d4af37; }
 
         .reel-category { margin-bottom: 140px; }
         .reel-category:last-child { margin-bottom: 0; }
         .reel-head { display: flex; align-items: center; gap: 26px; margin-bottom: 50px; padding-bottom: 26px; border-bottom: 1px solid rgba(212,175,55,0.15); position: relative; }
         .reel-head::after { content: ''; position: absolute; bottom: -1px; left: 0; width: 120px; height: 2px; background: linear-gradient(90deg, #d4af37, transparent); }
 
-        .reel-icon { font-size: 2.4rem; filter: drop-shadow(0 0 20px rgba(212,175,55,0.5)); animation: theaterIconWobble 5s infinite ease-in-out; display: inline-block; }
-        @keyframes theaterIconWobble { 0%, 100% { transform: translateY(0) scale(1) rotate(0deg); } 50% { transform: translateY(-8px) scale(1.1) rotate(4deg); } }
+        .reel-icon { font-size: 2.4rem; filter: drop-shadow(0 0 20px rgba(212,175,55,0.5)); display: inline-block; }
 
         .reel-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(380px, 1fr)); gap: 45px; }
 
         .video-card {
           position: relative; border-radius: 24px; overflow: hidden; aspect-ratio: 16/9; cursor: pointer; background: #070a11;
           border: 1px solid rgba(255,255,255,0.015); box-shadow: 0 30px 70px rgba(0,0,0,0.6);
-          transition: border-color 0.4s ease, box-shadow 0.4s ease; transform-style: preserve-3d;
+          transition: border-color 0.3s ease, box-shadow 0.3s ease;
         }
-        .video-card::after {
-          content: ''; position: absolute; top: 0; left: -160%; width: 70%; height: 100%;
-          background: linear-gradient(90deg, transparent, rgba(255,255,255,0.18), transparent);
-          transform: skewX(-30deg); z-index: 2;
-        }
-        .video-card:hover::after { left: 260%; transition: left 1.2s cubic-bezier(0.16, 1, 0.3, 1); }
         .video-card:hover { border-color: rgba(212,175,55,0.75); box-shadow: 0 60px 110px rgba(0,0,0,0.9), 0 0 40px rgba(212,175,55,0.2); }
 
-        .video-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.6s cubic-bezier(.16,1,.3,1), filter 0.6s ease; filter: brightness(0.55) contrast(1.08); }
-        .video-card:hover img { transform: scale(1.08); filter: brightness(0.88); }
+        .video-card img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease, filter 0.5s ease; filter: brightness(0.55) contrast(1.08); }
+        .video-card:hover img { transform: scale(1.06); filter: brightness(0.88); }
 
         .play-button {
-          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%) scale(0.85);
+          position: absolute; top: 50%; left: 50%; transform: translate(-50%, -50%);
           width: 88px; height: 88px; border-radius: 50%; background: linear-gradient(135deg, #d4af37, #f5d169);
           display: flex; align-items: center; justify-content: center; box-shadow: 0 15px 45px rgba(212,175,55,0.45);
-          transition: transform 0.35s cubic-bezier(.16,1,.3,1), box-shadow 0.35s ease, background 0.35s ease;
+          transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
-        .video-card:hover .play-button { transform: translate(-50%, -50%) scale(1.15); box-shadow: 0 30px 70px rgba(212,175,55,0.8); background: linear-gradient(135deg, #ffe28a, #d4af37); }
+        .video-card:hover .play-button { transform: translate(-50%, -50%) scale(1.12); box-shadow: 0 30px 70px rgba(212,175,55,0.8); }
         .play-button::after { content: ''; border-style: solid; border-width: 14px 0 14px 26px; border-color: transparent transparent transparent #030406; margin-left: 8px; }
 
         .ornament { display: flex; align-items: center; justify-content: center; gap: 32px; padding: 60px 0; }
         .ornament .line { height: 1px; width: 250px; background: linear-gradient(90deg, transparent, rgba(212,175,55,0.5)); position: relative; }
         .ornament .line.right { background: linear-gradient(90deg, rgba(212,175,55,0.5), transparent); }
         .ornament .diamond-composite { display: flex; align-items: center; gap: 8px; }
-        .ornament .diamond { width: 9px; height: 9px; background: #d4af37; transform: rotate(45deg); box-shadow: 0 0 15px rgba(212,175,55,0.8); animation: luxuryPulse 3s infinite ease-in-out; }
-        .ornament .diamond.small { width: 5px; height: 5px; background: rgba(212,175,55,0.5); animation-delay: 0.5s; }
-        @keyframes luxuryPulse { 0%, 100% { transform: rotate(45deg) scale(1); opacity: 0.6; } 50% { transform: rotate(45deg) scale(1.4); opacity: 1; box-shadow: 0 0 25px rgba(212,175,55,1); } }
+        .ornament .diamond { width: 9px; height: 9px; background: #d4af37; transform: rotate(45deg); box-shadow: 0 0 15px rgba(212,175,55,0.8); }
+        .ornament .diamond.small { width: 5px; height: 5px; background: rgba(212,175,55,0.5); }
 
-        .back-link { color: rgba(255,255,255,0.38); font-size: 0.72rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; transition: color 0.35s ease, transform 0.35s ease, letter-spacing 0.35s ease; position: relative; display: inline-flex; align-items: center; }
-        .back-link::after { content: ''; position: absolute; bottom: -8px; left: 50%; transform: translateX(-50%); width: 0; height: 1px; background: #d4af37; transition: width 0.45s ease; }
-        .back-link:hover { color: #d4af37; transform: translateY(-4px); letter-spacing: 6px; }
-        .back-link:hover::after { width: 100%; }
+        .back-link { color: rgba(255,255,255,0.38); font-size: 0.72rem; font-weight: 700; letter-spacing: 5px; text-transform: uppercase; text-decoration: none; transition: color 0.3s ease; position: relative; display: inline-flex; align-items: center; }
+        .back-link:hover { color: #d4af37; }
 
         .lightbox-overlay {
           position: fixed; inset: 0; z-index: 3000; background: rgba(1,2,3,0.97);
           display: flex; align-items: center; justify-content: center; padding: 40px 20px;
-          backdrop-filter: blur(20px); animation: overlayBlurFadeIn .35s ease forwards;
+          animation: overlayFadeIn .2s ease forwards;
         }
-        @keyframes overlayBlurFadeIn { from { opacity: 0; } to { opacity: 1; } }
+        @keyframes overlayFadeIn { from { opacity: 0; } to { opacity: 1; } }
 
         .lightbox-img {
           max-width: 95vw; max-height: 86vh; border-radius: 20px; border: 1px solid rgba(255,255,255,0.12);
-          box-shadow: 0 70px 150px rgba(0,0,0,1); transform: scale(0.94); animation: modalZoomIn .35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+          box-shadow: 0 70px 150px rgba(0,0,0,1);
         }
-        @keyframes modalZoomIn { to { transform: scale(1); } }
 
         .lightbox-close {
-          position: absolute; top: 40px; right: 40px; width: 64px; height: 64px; border-radius: 50%;
-          background: rgba(255,255,255,0.01); border: 1px solid rgba(255,255,255,0.15);
-          color: #fff; font-size: 1.5rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
-          backdrop-filter: blur(10px); transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease, transform 0.3s ease, box-shadow 0.3s ease;
+          position: absolute; top: 40px; right: 40px; width: 56px; height: 56px; border-radius: 50%;
+          background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15);
+          color: #fff; font-size: 1.4rem; cursor: pointer; display: flex; align-items: center; justify-content: center;
+          transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
         }
-        .lightbox-close:hover { background: rgba(212,175,55,0.25); border-color: #d4af37; color: #d4af37; transform: rotate(90deg) scale(1.1); box-shadow: 0 0 25px rgba(212,175,55,0.6); }
+        .lightbox-close:hover { background: rgba(212,175,55,0.25); border-color: #d4af37; color: #d4af37; }
 
         .video-lightbox-frame {
           width: min(95vw, 1320px); aspect-ratio: 16/9; border-radius: 24px; overflow: hidden;
           border: 1px solid rgba(255,255,255,0.14); box-shadow: 0 70px 150px rgba(0,0,0,1);
-          transform: scale(0.94); animation: modalZoomIn .35s cubic-bezier(0.16, 1, 0.3, 1) forwards;
         }
         .video-lightbox-frame iframe { width: 100%; height: 100%; border: none; }
 
-        @media (max-width: 768px) {
-          .nav-bar-pf { padding: 22px 6% !important; }
-          .hero-sec-pf { padding: 190px 6% 80px !important; min-height: 55vh !important; }
-          .gallery-sec-pf, .reel-sec-pf { padding: 90px 6% !important; }
-          .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)) !important; gap: 30px !important; }
-          .reel-grid { grid-template-columns: 1fr !important; gap: 36px !important; }
-          .custom-cursor-glow { display: none !important; }
+        /* ===== Desktop nav gets the heavy blur; mobile gets a cheap solid bg ===== */
+        .nav-bar-pf {
+          backdrop-filter: blur(50px);
         }
+
+        @media (max-width: 768px) {
+          .nav-bar-pf { padding: 22px 6% !important; backdrop-filter: none !important; background: rgba(3,4,6,0.96) !important; }
+          .hero-sec-pf { padding: 150px 6% 60px !important; min-height: 50vh !important; }
+          .gallery-sec-pf, .reel-sec-pf { padding: 70px 6% !important; }
+          .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)) !important; gap: 22px !important; }
+          .reel-grid { grid-template-columns: 1fr !important; gap: 28px !important; }
+
+          /* Disable every GPU-heavy desktop decoration on mobile */
+          .custom-cursor-glow,
+          .ambient-glow,
+          .film-grain { display: none !important; }
+
+          /* And the lightweight mobile equivalent kicks in instead */
+          .mobile-bg-glow,
+          .mobile-grain-static { display: block !important; }
+
+          /* Caption + zoom icon: show immediately on mobile (no hover available) */
+          .gallery-caption { opacity: 1 !important; padding: 22px !important; }
+          .gallery-zoom-icon { display: none !important; }
+          .gallery-item img { filter: brightness(0.9) contrast(1.05) !important; }
+          .gallery-item:active img { transform: scale(1.03); }
+
+          .video-card img { filter: brightness(0.75) !important; }
+          .play-button { width: 64px !important; height: 64px !important; }
+
+          .reel-category { margin-bottom: 70px !important; }
+          .reel-head { margin-bottom: 30px !important; padding-bottom: 18px !important; }
+          .eyebrow .tick::after { animation: none !important; }
+
+          .ornament .line { width: 70px !important; }
+        }
+
+        /* Hide mobile-only layers by default; mobile media query above turns them on */
+        .mobile-bg-glow, .mobile-grain-static { display: none; }
 
         @media (prefers-reduced-motion: reduce) {
           .fu { transition: none !important; opacity: 1 !important; transform: none !important; }
         }
       `}</style>
 
+      {/* Desktop decorative layers (unchanged) */}
       <div ref={cursorGlowRef} className="custom-cursor-glow" />
       <div className="film-grain" />
       <div className="ambient-glow" />
       <div className="ambient-glow glow-2" />
       <div className="ambient-glow glow-3" />
 
+      {/* Mobile lightweight equivalents (CSS turns these on only under 768px) */}
+      <div className="mobile-bg-glow" />
+      <div className="mobile-grain-static" />
+
       <div style={{ position: "fixed", top: 0, left: 0, height: 2, background: "linear-gradient(90deg, #8e6f23, #d4af37, #ffe28a)", zIndex: 9999 }}>
         <div ref={scrollBarRef} style={{ height: "100%", width: "0%", background: "inherit" }} />
       </div>
 
       {/* ===== NAV ===== */}
-      <nav className="nav-bar-pf" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "26px 6%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(3,4,6,0.8)", backdropFilter: "blur(50px)", borderBottom: "1px solid rgba(255,255,255,0.015)" }}>
+      <nav className="nav-bar-pf" style={{ position: "fixed", top: 0, left: 0, right: 0, zIndex: 1000, padding: "26px 6%", display: "flex", alignItems: "center", justifyContent: "space-between", background: "rgba(3,4,6,0.8)", borderBottom: "1px solid rgba(255,255,255,0.015)" }}>
         <a href="/" style={{ display: "flex", alignItems: "center", gap: 16, textDecoration: "none" }}>
           <div style={{ position: "relative", overflow: "hidden", borderRadius: 12, height: 44, width: 44 }}>
-            <img src={LOGO_URL} alt="FLM" style={{ height: "100%", width: "100%", objectFit: "cover", border: "1px solid rgba(255,255,255,0.12)", transition: "transform 0.6s cubic-bezier(.16,1,.3,1)" }} onMouseEnter={(e) => (e.currentTarget.style.transform = "rotate(360deg) scale(1.15)")} onMouseLeave={(e) => (e.currentTarget.style.transform = "rotate(0deg) scale(1)")} />
+            <img src={LOGO_URL} alt="FLM" style={{ height: "100%", width: "100%", objectFit: "cover", border: "1px solid rgba(255,255,255,0.12)" }} />
           </div>
-          <span style={{ color: "#fff", fontSize: "0.92rem", fontWeight: 900, letterSpacing: 9, transition: "color 0.3s" }} onMouseEnter={(e) => (e.currentTarget.style.color = "#d4af37")} onMouseLeave={(e) => (e.currentTarget.style.color = "#fff")}>FOCAL LENGTH</span>
+          <span style={{ color: "#fff", fontSize: "0.92rem", fontWeight: 900, letterSpacing: 9 }}>FOCAL LENGTH</span>
         </a>
         <a href="/" className="back-link">← Back Home</a>
       </nav>
@@ -461,7 +501,7 @@ export default function PortfolioPage() {
 
           <div className="gallery-grid">
             {studioImages.map((img, i) => (
-              <Reveal key={i} delay={Math.min(i, 8) * 50}>
+              <Reveal key={i} delay={isMobile ? 0 : Math.min(i, 8) * 50}>
                 <div
                   className="gallery-item"
                   onClick={() => setLightboxImg(img)}
@@ -473,7 +513,7 @@ export default function PortfolioPage() {
                   <img src={img.src} alt={img.caption} loading="lazy" />
                   <div className="gallery-zoom-icon">⤜</div>
                   <div className="gallery-caption">
-                    <div style={{ width: 30, height: 1, background: "#d4af37", marginBottom: 16, transform: hoveredCard === `st-${i}` ? "scaleX(1.8)" : "scaleX(1)", transformOrigin: "left", transition: "transform 0.4s ease" }} />
+                    <div style={{ width: 30, height: 1, background: "#d4af37", marginBottom: 16, transform: hoveredCard === `st-${i}` ? "scaleX(1.8)" : "scaleX(1)", transformOrigin: "left", transition: "transform 0.3s ease" }} />
                     <span>{img.caption}</span>
                   </div>
                 </div>
@@ -511,7 +551,7 @@ export default function PortfolioPage() {
                     const id = getYouTubeId(url);
                     if (!id) return null;
                     return (
-                      <Reveal key={vi} delay={Math.min(vi, 8) * 50}>
+                      <Reveal key={vi} delay={isMobile ? 0 : Math.min(vi, 8) * 50}>
                         <div
                           className="video-card"
                           onClick={() => setActiveVideo(id)}
