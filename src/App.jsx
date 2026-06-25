@@ -566,46 +566,24 @@ export default function FocalLengthMedia() {
         /* ============ MOBILE NAV ============ */
         .mobile-menu-trigger {
           display: none;
-          width: 44px;
-          height: 44px;
+          width: 46px;
+          height: 46px;
           align-items: center;
           justify-content: center;
-          background: rgba(255,255,255,0.04);
-          border: 1px solid rgba(255,255,255,0.08);
+          background: rgba(255,255,255,0.06);
+          border: 1px solid rgba(255,255,255,0.12);
           border-radius: 8px;
           cursor: pointer;
           padding: 0;
-          z-index: 1600;
+          z-index: 2100;
           position: relative;
           flex-shrink: 0;
-        }
-        .mobile-menu-panel {
-          position: fixed;
-          top: 0;
-          right: 0;
-          height: 100vh;
-          height: 100dvh;
-          width: min(80vw, 320px);
-          background: #05070a;
-          border-left: 1px solid rgba(255,255,255,0.06);
-          z-index: 1500;
-          transform: translateX(100%);
-          transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
-          display: flex;
-          flex-direction: column;
-          padding: 100px 32px 40px;
-          gap: 26px;
-          overflow-y: auto;
-        }
-        .mobile-menu-panel.is-open {
-          transform: translateX(0);
         }
         .mobile-menu-overlay {
           position: fixed;
           inset: 0;
-          background: rgba(0,0,0,0.65);
-          backdrop-filter: blur(4px);
-          z-index: 1400;
+          background: rgba(0,0,0,0.7);
+          z-index: 1900;
           opacity: 0;
           pointer-events: none;
           transition: opacity 0.3s ease;
@@ -614,45 +592,30 @@ export default function FocalLengthMedia() {
           opacity: 1;
           pointer-events: auto;
         }
-        .mobile-nav-link {
-          font-family: 'Montserrat', sans-serif;
-          font-size: 1rem;
-          font-weight: 600;
-          letter-spacing: 2px;
-          text-transform: uppercase;
-          color: rgba(255,255,255,0.75);
-          cursor: pointer;
-          padding-bottom: 16px;
-          border-bottom: 1px solid rgba(255,255,255,0.05);
-          transition: color 0.2s;
-        }
-        .mobile-nav-link:active,
-        .mobile-nav-link:hover {
-          color: #d4af37;
-        }
-        .mobile-menu-close {
-          position: absolute;
-          top: 24px;
-          right: 24px;
-          width: 36px;
-          height: 36px;
-          background: rgba(255,255,255,0.05);
-          border: 1px solid rgba(255,255,255,0.1);
-          border-radius: 8px;
-          color: rgba(255,255,255,0.6);
-          font-size: 1.2rem;
-          cursor: pointer;
-          line-height: 1;
+        .mobile-menu-panel {
+          position: fixed;
+          top: 0;
+          right: 0;
+          height: 100vh;
+          height: 100dvh;
+          width: min(82vw, 340px);
+          background: #0a0d12;
+          border-left: 1px solid rgba(212,175,55,0.25);
+          z-index: 2000;
+          transform: translateX(100%);
+          transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1);
           display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
+          flex-direction: column;
+          overflow-y: auto;
+        }
+        .mobile-menu-panel.is-open {
+          transform: translateX(0);
         }
 
         .hamburger-line {
           width: 20px;
           height: 2px;
-          background: #fff;
+          background: #ffffff;
           display: block;
           border-radius: 1px;
           transition: transform 0.3s ease, opacity 0.3s ease;
@@ -681,11 +644,7 @@ export default function FocalLengthMedia() {
 
         @media (max-width: 380px) {
           .mobile-menu-panel {
-            width: 86vw;
-            padding: 90px 24px 32px;
-          }
-          .mobile-nav-link {
-            font-size: 0.92rem;
+            width: 88vw;
           }
         }
 
@@ -895,23 +854,102 @@ export default function FocalLengthMedia() {
         onClick={() => setMobileMenuOpen(false)}
       />
       <div className={`mobile-menu-panel ${mobileMenuOpen ? "is-open" : ""}`}>
-        <button
-          className="mobile-menu-close"
-          onClick={() => setMobileMenuOpen(false)}
-          aria-label="Close menu"
-          type="button"
+        {/* Panel header */}
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "space-between",
+            padding: "24px 24px 20px",
+            borderBottom: "1px solid rgba(255,255,255,0.08)",
+          }}
         >
-          ✕
-        </button>
-        {["Services", "About", "Portfolio", "Faq", "Contact"].map((l) => (
           <span
-            key={l}
-            className="mobile-nav-link"
-            onClick={() => handleNavClick(l)}
+            style={{
+              color: "#ffffff",
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: "0.7rem",
+              fontWeight: 800,
+              letterSpacing: "4px",
+              textTransform: "uppercase",
+            }}
           >
-            {l}
+            Menu
           </span>
-        ))}
+          <button
+            onClick={() => setMobileMenuOpen(false)}
+            aria-label="Close menu"
+            type="button"
+            style={{
+              width: 36,
+              height: 36,
+              background: "rgba(255,255,255,0.08)",
+              border: "1px solid rgba(255,255,255,0.15)",
+              borderRadius: 8,
+              color: "#ffffff",
+              fontSize: "1.1rem",
+              lineHeight: 1,
+              cursor: "pointer",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              padding: 0,
+            }}
+          >
+            ✕
+          </button>
+        </div>
+
+        {/* Panel links */}
+        <div style={{ display: "flex", flexDirection: "column", padding: "12px 0", flex: 1 }}>
+          {["Services", "About", "Portfolio", "Faq", "Contact"].map((l) => (
+            <button
+              key={l}
+              type="button"
+              onClick={() => handleNavClick(l)}
+              style={{
+                display: "block",
+                width: "100%",
+                textAlign: "left",
+                background: "transparent",
+                border: "none",
+                borderBottom: "1px solid rgba(255,255,255,0.06)",
+                color: "#ffffff",
+                fontFamily: "'Montserrat', sans-serif",
+                fontSize: "1.05rem",
+                fontWeight: 700,
+                letterSpacing: "1.5px",
+                textTransform: "uppercase",
+                padding: "20px 28px",
+                cursor: "pointer",
+              }}
+              onTouchStart={(e) => { e.currentTarget.style.background = "rgba(212,175,55,0.12)"; }}
+              onTouchEnd={(e) => { e.currentTarget.style.background = "transparent"; }}
+            >
+              {l}
+            </button>
+          ))}
+        </div>
+
+        {/* Panel footer */}
+        <div
+          style={{
+            padding: "20px 28px 28px",
+            borderTop: "1px solid rgba(255,255,255,0.06)",
+          }}
+        >
+          <div
+            style={{
+              color: "rgba(255,255,255,0.4)",
+              fontFamily: "'Montserrat', sans-serif",
+              fontSize: "0.65rem",
+              letterSpacing: "2px",
+              textTransform: "uppercase",
+            }}
+          >
+            Focal Length Media
+          </div>
+        </div>
       </div>
 
       {/* VIEWPORT GRAPHIC CONTENT HUB */}
