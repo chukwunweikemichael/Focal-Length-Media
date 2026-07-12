@@ -39,6 +39,13 @@ const captions = [
   { icon: "🚀", text: "We craft the strategic visual architecture that scales Nigerian creative talent globally" },
 ];
 
+// Unpredictable dynamic mood matrix maps
+const moodMetadata = {
+  "Cinematic Luxury (Moody, High Contrast)": { aspect: "2.39:1 Anamorphic Cinema Scope", temp: "3200K - 4500K Low-Key Tungsten", lens: "Arri Signature Primes / Cooke Optics" },
+  "Vibrant Afro-Futurism (High Color, Punchy)": { aspect: "16:9 Expanded Full Frame IMAX", temp: "5600K - 6500K High Saturation Neon", lens: "Angenieux Optimo Ultra Zooms" },
+  "Minimalist Clean (High-End Corporate, Crisp)": { aspect: "1.85:1 Modern Flat Screen", temp: "5000K Natural Soft Day Diffusion", lens: "RED Monstro / Zeiss Supreme Radiance" }
+};
+
 export default function LandingAd() {
   const [form, setForm] = useState({ name: "", contact: "", service: "", message: "" });
   const [sent, setSent] = useState(false);
@@ -47,8 +54,11 @@ export default function LandingAd() {
   
   // Immersive Psychological Configuration Engine (No Prices)
   const [calcService, setCalcService] = useState(services[0].name);
-  const [visualMood, setVisualMood] = useState("Cinematic Luxury (Anamorphic, Moody)");
+  const [visualMood, setVisualMood] = useState("Cinematic Luxury (Moody, High Contrast)");
   const [addons, setAddons] = useState({ drone: false, grading: false, choreography: false });
+
+  // Unpredictable Accordion System State
+  const [activeFaq, setActiveFaq] = useState(null);
 
   // Auto-fill trigger to smash form friction
   const applyQuickBrief = (serviceName, initialMsg) => {
@@ -190,6 +200,21 @@ export default function LandingAd() {
         .config-summary { background: linear-gradient(135deg, #050505 0%, #171717 100%); color: #fff; padding: 32px; border-radius: 16px; margin-top: 16px; border: 1px solid rgba(197,160,89,0.25); text-align: center; }
         .config-summary h4 { font-family: 'Inter', sans-serif; font-size: 0.7rem; letter-spacing: 3px; text-transform: uppercase; color: #c5a059; margin-bottom: 10px; }
         .config-summary .status-text { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; color: #fff; line-height: 1.3; margin-bottom: 16px; }
+
+        /* ── DYNAMIC LIVE SPEC PREVIEW MODULE ── */
+        .live-preview-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 16px; background: rgba(255,255,255,0.05); padding: 14px; border-radius: 8px; border: 1px dashed rgba(197,160,89,0.3); text-align: left; }
+        .spec-item { font-family: 'Inter', sans-serif; font-size: 0.68rem; color: rgba(255,255,255,0.8); }
+        .spec-label { font-size: 0.55rem; text-transform: uppercase; color: #c5a059; font-weight: 800; letter-spacing: 1px; margin-bottom: 2px; }
+        
+        /* ── THE BLUEPRINT PROTOCOLS (UNPREDICTABLE FAQ ENGINE) ── */
+        .faq-sec { background: #fdfdfb; padding: clamp(70px, 9vw, 110px) clamp(24px, 6%, 56px); border-top: 1px solid #e9e5dc; }
+        .faq-wrapper { max-width: 820px; margin: 0 auto; }
+        .faq-item { background: #fff; border: 1px solid #e9e5dc; border-radius: 12px; margin-bottom: 14px; overflow: hidden; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); }
+        .faq-trigger { width: 100%; text-align: left; background: none; border: none; padding: 24px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; font-family: 'Inter', sans-serif; font-size: 1rem; font-weight: 800; color: #050505; }
+        .faq-icon { font-size: 1.1rem; color: #c5a059; transition: transform 0.3s ease; }
+        .faq-content { padding: 0 24px 24px; font-family: 'Inter', sans-serif; font-size: 0.9rem; color: #4a4a4a; line-height: 1.8; border-top: 1px solid transparent; }
+        .faq-item.active { border-color: #c5a059; box-shadow: 0 10px 30px rgba(197,160,89,0.05); }
+        .faq-item.active .faq-icon { transform: rotate(45deg); }
         
         /* ── INTENSE HIGH-END BRAND IDENTITY HOOK ── */
         .identity-hook { background: #050505; padding: clamp(80px, 10vw, 120px) clamp(24px, 6%, 56px); position: relative; }
@@ -460,6 +485,7 @@ export default function LandingAd() {
                 ].map(direction => (
                   <button 
                     key={direction}
+                    type="button"
                     onClick={() => setVisualMood(direction)}
                     style={{ 
                       flex: 1, 
@@ -505,8 +531,52 @@ export default function LandingAd() {
               <p style={{ fontFamily: "'Inter', sans-serif", fontSize: '0.85rem', color: 'rgba(255,255,255,0.7)', fontStyle: 'italic', maxWidth: '580px', margin: '0 auto' }}>
                 "Atmosphere configured for {visualMood}. Complete the submission segment below to receive calendar availability options and premium budget frameworks."
               </p>
+
+              {/* Dynamic Live Specification Blueprint Matrix */}
+              <div className="live-preview-grid">
+                <div className="spec-item">
+                  <div className="spec-label">Aspect Framework</div>
+                  <strong>{moodMetadata[visualMood]?.aspect || "Standard Scope"}</strong>
+                </div>
+                <div className="spec-item">
+                  <div className="spec-label">Color Space Temp</div>
+                  <strong>{moodMetadata[visualMood]?.temp || "Variable Kelvins"}</strong>
+                </div>
+                <div className="spec-item">
+                  <div className="spec-label">Suggested Glass Optic</div>
+                  <strong>{moodMetadata[visualMood]?.lens || "Master Prime Grade"}</strong>
+                </div>
+              </div>
             </div>
           </div>
+        </div>
+      </div>
+
+      <div className="line-break" />
+
+      {/* ── THE BLUEPRINT PROTOCOLS (EXECUTIVE FAQ CHANNEL) ── */}
+      <div className="faq-sec">
+        <div className="faq-wrapper">
+          <div className="section-tag" style={{ justifyContent: "center", marginBottom: 12 }}>Pre-Consultation Briefing</div>
+          <div className="section-title" style={{ textAlign: "center", fontSize: "2.4rem", marginBottom: 45 }}>The Blueprint <em style={{ fontFamily: "'Playfair Display', serif", fontStyle: "italic", color: "#c5a059" }}>Protocols</em></div>
+          
+          {[
+            { q: "What is your typical turnaround window from concept kickoff to final delivery?", a: "Because we prioritize absolute premium calibration, standard music assets or high-end TVC campaigns conclude post-production formatting within 14 to 21 bank working days. Expedited global rollouts can be structurally fast-tracked during our initial consultation sync." },
+            { q: "Do you facilitate inter-state and international destination film sets?", a: "Completely. While our flagship creative suites are anchored in Lagos, Nigeria, our technical configurations, drone arrays, and master directors regularly deploy globally to capture high-concept lifestyle, fashion, and cinematic entertainment assets anywhere culture calls." },
+            { q: "How are project intellectual property rights distributed?", a: "Full commercial broadcasting allocation rights transfer entirely to the client upon final production settlement execution. Focal Length Media retains archival catalog rights for historical studio lookbooks and master industry showreel showcases." }
+          ].map((item, idx) => (
+            <div key={idx} className={`faq-item ${activeFaq === idx ? "active" : ""}`}>
+              <button className="faq-trigger" onClick={() => setActiveFaq(activeFaq === idx ? null : idx)}>
+                <span>{item.q}</span>
+                <span className="faq-icon">＋</span>
+              </button>
+              {activeFaq === idx && (
+                <div className="faq-content">
+                  <p>{item.a}</p>
+                </div>
+              )}
+            </div>
+          ))}
         </div>
       </div>
 
